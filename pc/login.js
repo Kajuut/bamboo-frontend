@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.0.102'
+    ? 'http://192.168.0.102:3000' 
+    : 'https://bamboo-backend-dmyg.onrender.com'; // Tu URL oficial de Render
+
 document.addEventListener('DOMContentLoaded', () => {
     const videoFondo = document.getElementById('bg-video');
     if (videoFondo) {
@@ -39,7 +43,7 @@ loginForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
 
     try {
-        const respuesta = await fetch('http://192.168.0.102:3000/api/auth/login', {
+        const respuesta = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

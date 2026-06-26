@@ -2,6 +2,10 @@
 // MOTOR LÓGICO DE REGISTRO SEGURO Y VERIFICACIÓN OTP (BAMBOO)
 // ========================================================
 
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.0.102'
+    ? 'http://192.168.0.102:3000' 
+    : 'https://bamboo-backend-dmyg.onrender.com'; // Tu URL oficial de Render
+
 document.addEventListener('DOMContentLoaded', () => {
     const formRegistro = document.getElementById('formRegistroUsuario');
     const formOTP = document.getElementById('formValidarOTP');
@@ -64,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Petición al backend para solicitar el envío del código OTP al celular
-                const respuesta = await fetch('http://localhost:3000/api/auth/solicitar-otp', {
+                const respuesta = await fetch(`${API_BASE_URL}/api/auth/solicitar-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ telefono, correo })
@@ -103,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Mandamos el código y los datos completos del usuario para el registro definitivo
-                const respuesta = await fetch('http://localhost:3000/api/auth/verificar-registro', {
+                const respuesta = await fetch(`${API_BASE_URL}/api/auth/verificar-registro`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
