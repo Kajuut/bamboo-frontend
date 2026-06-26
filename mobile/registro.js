@@ -2,6 +2,11 @@
 // MOTOR LÓGICO DE REGISTRO SEGURO Y VERIFICACIÓN OTP (BAMBOO)
 // ========================================================
 
+// 1. Conmutador inteligente al inicio del archivo
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.0.102'
+    ? 'http://192.168.0.102:3000'
+    : 'https://bamboo-backend-dmyg.onrender.com'; // Tu URL de Render
+
 // Instanciamos de forma global la alerta para evitar errores de Scope en el modal
 window.mostrarNotificacionM = function(mensaje, tipo) {
     const alerta = document.getElementById('alertaRegistro');
@@ -57,9 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             datosRegistroTemporales = { nombre, correo, telefono, password };
 
-            try {
-                // ⚠️ CORRECCIÓN: Apuntamos directo a tu IP de red local
-                const respuesta = await fetch('http://192.168.0.102:3000/api/auth/solicitar-otp', {
+           try {
+                // 2. PRIMER FETCH MODIFICADO
+                const respuesta = await fetch(`${API_BASE_URL}/api/auth/solicitar-otp`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ telefono, correo })
@@ -95,14 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // ⚠️ CORRECCIÓN: Sincronizado con la IP operativa de Atlas
-                const respuesta = await fetch('http://192.168.0.102:3000/api/auth/verificar-registro', {
+                // 3. SEGUNDO FETCH MODIFICADO
+                const respuesta = await fetch(`${API_BASE_URL}/api/auth/verificar-registro`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        ...datosRegistroTemporales,
-                        codigo: codigoOTP
-                    })
+                    body: JSON.stringify({ ...datosRegistroTemporales, codigo: codigoOTP })
                 });
 
                 const resultado = await respuesta.json();

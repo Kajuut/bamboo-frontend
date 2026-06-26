@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.0.102'
+    ? 'http://192.168.0.102:3000'
+    : 'https://bamboo-backend-dmyg.onrender.com'; // Tu URL de Render
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ========================================================
@@ -96,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!usuarioTienePermiso('acceso_vista_metricas')) return;
 
         try {
-            const respuesta = await fetch('http://192.168.0.102:3000/api/reservas/estadisticas', {
+            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/estadisticas`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -400,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================
     async function cargarPreciosActuales() {
         try {
-            const respuesta = await fetch('http://192.168.0.102:3000/api/config');
+            const respuesta = await fetch(`${API_BASE_URL}/api/config`);
             if (respuesta.ok) {
                 const config = await respuesta.json();
                 document.getElementById('precio_p1_sem').value = config.precio_paquete1_semana || 0;
@@ -449,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const respuesta = await fetch('http://192.168.0.102:3000/api/config/actualizar', {
+                const respuesta = await fetch(`${API_BASE_URL}/api/config/actualizar`, {
                     method: 'PUT',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -502,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (tablaReservasBody) {
                 tablaReservasBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Cargando reservaciones...</td></tr>';
             }
-            const respuesta = await fetch('http://192.168.0.102:3000/api/reservas/todas', {
+            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/todas`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -706,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (errAnticipo) errAnticipo.style.display = 'none';
 
                     try {
-                        const respuesta = await fetch(`http://192.168.0.102:3000/api/reservas/${idReservaSeleccionada}/anticipo`, {
+                        const respuesta = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}/anticipo`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                             body: JSON.stringify({ monto_adicional: montoAAbonar }) 
@@ -834,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
 
                         try {
-                            const respuesta = await fetch(`http://192.168.0.102:3000/api/reservas/${idReservaSeleccionada}`, {
+                            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}`, {
                                 method: 'PUT',
                                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                                 body: JSON.stringify(payloadActualizado)
@@ -988,7 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function descargarYClasificarFechas() {
         try {
-            const respuesta = await fetch('http://192.168.0.102:3000/api/reservas/todas', {
+            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/todas`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -1179,7 +1183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function calcularPrecioEnVivoCrear() {
         let configPrecios = {};
         try {
-            const resp = await fetch('http://192.168.0.102:3000/api/config');
+            const resp = await fetch(`${API_BASE_URL}/api/config`);
             if(resp.ok) {
                 const data = await resp.json();
                 configPrecios = Array.isArray(data) ? (data[0] || {}) : data;
@@ -1337,7 +1341,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función auxiliar para compactar el guardado de ambas vías
     async function ejecutarPeticionGuardadoGlobal(datosPayload, mensajeExito) {
         try {
-            const respuesta = await fetch('http://192.168.0.102:3000/api/reservas/nueva', {
+            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/nueva`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify(datosPayload)
@@ -1377,7 +1381,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let configPrecios = {};
         try {
-            const respPrecios = await fetch('http://192.168.0.102:3000/api/config');
+            const respPrecios = await fetch(`${API_BASE_URL}/api/config`);
             if(respPrecios.ok) {
                 const data = await respPrecios.json();
                 configPrecios = Array.isArray(data) ? (data[0] || {}) : data;
@@ -1569,7 +1573,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 try {
-                    const respuesta = await fetch(`http://192.168.0.102:3000/api/reservas/${idReservaSeleccionada}`, {
+                    const respuesta = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                         body: JSON.stringify(payloadActualizado)
@@ -1607,7 +1611,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!segundoPaso) return;
 
             try {
-                const respuesta = await fetch(`http://192.168.0.102:3000/api/reservas/eliminar/${idReservaSeleccionada}`, {
+                const respuesta = await fetch(`${API_BASE_URL}/api/reservas/eliminar/${idReservaSeleccionada}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -1755,7 +1759,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Consultando personal en Atlas...</td></tr>';
 
         try {
-            const respuesta = await fetch('http://192.168.0.102:3000/api/usuarios/todos', {
+            const respuesta = await fetch(`${API_BASE_URL}/api/usuarios/todos`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -1828,7 +1832,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!segundoPaso) return;
 
         try {
-            const respuesta = await fetch(`http://192.168.0.102:3000/api/usuarios/eliminar/${id}`, {
+            const respuesta = await fetch(`${API_BASE_URL}/api/usuarios/eliminar/${id}`, {
                 method: 'DELETE',
                 headers: { 
                     'Authorization': `Bearer ${token || localStorage.getItem('bamboo_token')}` 
@@ -1942,7 +1946,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contenedor.innerHTML = '<p style="color: #8C8A85; font-style: italic;">Consultando compromisos semanales...</p>';
 
         try {
-            const respuesta = await fetch('http://192.168.0.102:3000/api/reservas/agenda-semanal', {
+            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/agenda-semanal`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -2127,7 +2131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const respuesta = await fetch(`http://192.168.0.102:3000/api/usuarios/permisos/${idUsuarioSeleccionadoPermisos}`, {
+                const respuesta = await fetch(`${API_BASE_URL}/api/usuarios/permisos/${idUsuarioSeleccionadoPermisos}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

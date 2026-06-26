@@ -1,3 +1,6 @@
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.0.102'
+    ? 'http://192.168.0.102:3000' // Tu motor local
+    : 'https://bamboo-backend-dmyg.onrender.com'; // LA URL QUE TE DARÁ RENDER (Cambia por la tuya oficial)
 
 const loginForm = document.getElementById('loginForm');
 const notificacion = document.getElementById('notificacion');
@@ -23,11 +26,10 @@ loginForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
 
     try {
-        const respuesta = await fetch('http://192.168.0.102:3000/api/auth/login', {
+        // 2. CAMBIO DEL FETCH CON LA VARIABLE DINÁMICA
+        const respuesta = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ correo, password })
         });
 
