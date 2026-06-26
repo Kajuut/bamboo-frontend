@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BAMBOO | Panel Móvil</title>
+    <link rel="icon" type="image/svg+xml" href="favico.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================================
+           SISTEMA DE ESTILOS MÓVILES INTEGRADOS (BAMBOO CORE)
+           ======================================================== */
+        :root {
+            --bamboo-pino: #1A3626;
+            --bamboo-pino-light: #2D6A4F;
+            --bamboo-crema: #FAF8F5;
+            --bamboo-marfil: #F9F6F0;
+            --bamboo-dorado: #C5A059;
+            --bamboo-texto: #333333;
+            --bamboo-muted: #5C7A68;
+            --bamboo-border: #EAE6DF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bamboo-marfil);
+            color: var(--bamboo-texto);
+            padding-top: 75px;    /* Margen libre para barra fija superior */
+            padding-bottom: 90px; /* Margen libre para barra fija inferior */
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+        }
+
+        /* --- TOP BAR (FIJA SUPERIOR) --- */
+        .mobile-top-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background-color: var(--bamboo-pino);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            color: #FAF6EE;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+        }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #95D5B2;
+            background: rgba(255,255,255,0.06);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-logout-mobile {
+            background: transparent;
+            border: 1px solid var(--bamboo-dorado);
+            color: var(--bamboo-dorado);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* --- ENVOLTORIO GENERAL DE CONTENIDO --- */
+        .mobile-main-container {
+            width: 100%;
+            max-width: 480px; /* Acoplado a dimensiones smartphone estándar */
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .mobile-view-pane {
+            width: 100%;
+            animation: appEntradaVistas 0.35s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        /* --- CABECERAS DE SECCIÓN --- */
+        .top-header {
+            margin-bottom: 20px;
+        }
+
+        .top-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--bamboo-pino);
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .top-header p, .subtitle-text {
+            color: var(--bamboo-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* --- COMPONENTES CARD MÓVILES --- */
+        .bamboo-mobile-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--bamboo-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            margin-bottom: 16px;
+        }
+
+        /* --- BLOQUE DE MÉTRICAS INICIALES --- */
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 14px;
+            border-left: 5px solid var(--bamboo-pino-light);
+            border-top: 1px solid var(--bamboo-border);
+            border-right: 1px solid var(--bamboo-border);
+            border-bottom: 1px solid var(--bamboo-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.82rem;
+            color: var(--bamboo-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--bamboo-pino);
+        }
+
+        /* --- CONTROLES DE FORMULARIOS E INPUTS --- */
+        .input-group {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            width: 100% !important;
+        }
+
+        .input-group label, .config-box label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--bamboo-pino);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+        }
+
+        .editable-input, .config-box input, .search-input {
+            width: 100% !important;
+            height: 48px; /* Altura ergonómica móvil */
+            padding: 12px;
+            border: 1px solid var(--bamboo-border);
+            border-radius: 8px;
+            background-color: var(--bamboo-crema);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: var(--bamboo-texto);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .editable-input:focus, .config-box input:focus {
+            border-color: var(--bamboo-pino-light);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+        }
+
+        textarea.editable-input, .config-box textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 90px !important;
+            box-sizing: border-box !important;
+            padding: 10px !important;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        /* --- SELECTORES DE MODO Y PASOS --- */
+        .config-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--bamboo-border);
+        }
+
+        .config-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* --- BOTONES OPERATIVOS ERGONÓMICOS --- */
+        .btn-guardar-precios, .btn-accion, .btn-volver, .btn-buscar {
+            width: 100%;
+            height: 50px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin: 8px 0 0 0 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-guardar-precios, .btn-accion {
+            background-color: var(--bamboo-pino-light);
+            color: white;
+            border: none;
+        }
+
+        .btn-volver {
+            background-color: #ffffff;
+            color: #6E6C68;
+            border: 1px solid var(--bamboo-border);
+        }
+
+        .btn-dinero {
+            background-color: #E8F5E9;
+            border-color: #2D6A4F;
+            color: #2D6A4F;
+        }
+
+        /* --- REDISEÑO DE BOTONES DE ACCIÓN DEL EXPEDIENTE --- */
+        #vista-detalle-reserva .top-header .config-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 8px !important;
+            flex-direction: row !important;
+        }
+
+        #vista-detalle-reserva .top-header .btn-accion, 
+        #vista-detalle-reserva .top-header .btn-volver {
+            height: 38px !important;
+            font-size: 0.72rem !important;
+            margin: 0 !important;
+            padding: 0 4px !important;
+            white-space: nowrap;
+        }
+
+        /* --- TRANSFORMACIÓN DE TABLAS A TARJETAS OPERATIVAS --- */
+        .tabla-contenedor, .bamboo-panel-blanco {
+            width: 100% !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            margin-top: 12px;
+        }
+
+        .bamboo-tabla, .bamboo-tabla-usuarios {
+            display: block;
+            width: 100%;
+        }
+
+        .bamboo-tabla thead, .bamboo-tabla-usuarios thead {
+            display: none !important; /* Ocultamos cabeceras rígidas */
+        }
+
+        .bamboo-tabla tbody, .bamboo-tabla-usuarios tbody {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .bamboo-tabla tr, .bamboo-tabla-usuarios tr {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            border: 1px solid var(--bamboo-border);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.015);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .bamboo-tabla tr:hover, .bamboo-tabla-usuarios tr:hover {
+            background-color: #ffffff;
+        }
+
+        .bamboo-tabla td, .bamboo-tabla-usuarios td {
+            display: block;
+            width: 100%;
+            padding: 5px 0 !important;
+            border-bottom: none !important;
+            font-size: 0.95rem;
+            color: var(--bamboo-texto);
+            text-align: left !important;
+        }
+
+        /* Fila de botones internos de las nuevas tarjetas */
+        .bamboo-tabla td:last-child, .bamboo-tabla-usuarios td:last-child {
+            border-top: 1px dashed var(--bamboo-border) !important;
+            padding-top: 10px !important;
+            margin-top: 4px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        /* --- ETIQUETAS DE ESTADO (BADGES) --- */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        .badge.en_carrito { background-color: #FFF3CD; color: #856404; }
+        .badge.confirmada { background-color: #D4EDDA; color: #155724; }
+        .badge.cancelada { background-color: #F8D7DA; color: #721C24; }
+        .badge.pendiente_pago { background-color: #FFE5B4; color: #D4AF37; }
+        .badge.visita_agendada { background-color: #E2ECE9; color: #52796F; }
+        .badge.concluido { background-color: #E3ECF5; color: #2B4C7E; }
+
+        .btn-ver-detalle, .btn-operativo-user {
+            padding: 6px 12px;
+            background-color: var(--bamboo-crema);
+            color: var(--bamboo-pino-light);
+            border: 1px solid var(--bamboo-border);
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        /* --- CALENDARIO ADAPTADO --- */
+        .calendario-bamboo-card {
+            background-color: var(--bamboo-crema);
+            border-radius: 16px;
+            padding: 16px;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .cal-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .cal-month-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--bamboo-pino);
+        }
+
+        .cal-year-subtitle {
+            font-size: 0.8rem;
+            color: #8C8A85;
+            text-align: center;
+        }
+
+        .btn-nav-cal {
+            background: none; border: none; font-size: 1.5rem; color: var(--bamboo-pino); padding: 5px 10px;
+        }
+
+        .cal-dias-semana-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #8C8A85;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--bamboo-border);
+            padding-bottom: 4px;
+        }
+
+        .cal-grid-sistema {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .dia-bamboo-celda, .dia-bamboo-vacio {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .dia-bamboo-vacio { border: 1px dashed var(--bamboo-border); }
+        .dia-bamboo-celda.disponible { background-color: #F4EFEA; color: #2D312E; }
+        .dia-bamboo-celda.seleccionado-bamboo { border: 2px solid var(--bamboo-dorado) !important; background-color: #F4EFEA !important; }
+        .dia-bamboo-celda.ocupado { background-color: var(--bamboo-pino); color: white; }
+        .dia-bamboo-celda.visita { background-color: #E2ECE9; color: #52796F; }
+        .dia-bamboo-celda.concluido { background-color: #E3ECF5 !important; color: #2B4C7E !important; }
+        .dia-bamboo-celda.pasado { background-color: #F5F5F5 !important; color: #C0C0C0 !important; opacity: 0.5; }
+
+        .dia-bamboo-celda span.label-estado { display: none; }
+
+        .cal-leyenda-footer {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+        .leyenda-item { display: flex; align-items: center; gap: 4px; }
+        .leyenda-box { width: 10px; height: 10px; border-radius: 2px; }
+
+        /* --- EXCLUSIVOS DE MATRIZ DE PERMISOS --- */
+        .segmento-permisos-bloque {
+            background-color: var(--bamboo-crema);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--bamboo-border);
+        }
+        .segmento-titulo-header {
+            font-size: 0.8rem; text-transform: uppercase; color: var(--bamboo-pino); border-bottom: 1px dashed var(--bamboo-border); padding-bottom: 4px; margin-bottom: 8px; font-weight: 700;
+        }
+        .permiso-fila-switch {
+            display: flex; justify-content: space-between; align-items: center; padding: 6px 0;
+        }
+        .permiso-texto-lbl { font-size: 0.8rem; color: #4A4A4A; font-weight: 600; padding-right: 10px; }
+        
+        .bamboo-switch-toggle { position: relative; display: inline-block; width: 42px; height: 22px; min-width: 42px; }
+        .bamboo-switch-toggle input { opacity: 0; width: 0; height: 0; }
+        .slider-deslizable-track { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #EAE6DF; transition: .3s; border-radius: 22px; }
+        .slider-deslizable-track:before { position: absolute; content: ""; height: 16px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        .bamboo-switch-toggle input:checked + .slider-deslizable-track { background-color: var(--bamboo-pino-light); }
+        .bamboo-switch-toggle input:checked + .slider-deslizable-track:before { transform: translateX(18px); }
+
+        /* --- NAVIGATION BAR INFERIOR ERGONÓMICA --- */
+        .mobile-bottom-navigation {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 75px;
+            background-color: #ffffff;
+            border-top: 1px solid var(--bamboo-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.04);
+            z-index: 1000;
+        }
+
+        .menu-item {
+            background: none; border: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #8C8A85; font-family: inherit; font-size: 0.62rem; font-weight: 700;
+            text-transform: uppercase; text-decoration: none;
+            width: 16%; height: 100%; gap: 3px;
+        }
+
+        .menu-item-icon { font-size: 1.25rem; }
+        .menu-item.activo { color: var(--bamboo-pino-light); }
+
+        /* --- CAPAS DE MODALES CORREGIDAS (OCULTAS AL ARRANQUE) --- */
+        .modal-overlay, .bamboo-modal-sistema, .modal-bamboo-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(15, 36, 23, 0.4);
+            display: none; /* Forzado a none para evitar solapamientos */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content, .modal-bamboo-card, .modal-bamboo-overlay > div {
+            background-color: white;
+            padding: 24px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            animation: mobileModalEfecto 0.25s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        .folio-text {
+            font-family: monospace; color: #FAF6EE; background-color: var(--bamboo-pino); padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin-top: 4px;
+        }
+
+        .ticket-cambio-card {
+            background-color: var(--bamboo-crema); border-left: 4px solid var(--bamboo-dorado); padding: 10px; border-radius: 4px 10px 10px 4px; font-size: 0.78rem; margin-bottom: 8px;
+        }
+
+        @keyframes appEntradaVistas { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes mobileModalEfecto { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-top-header">
+        <span class="brand-title">BAMBOO</span>
+        <div class="user-profile-box">
+            <span id="nombreUsuario" class="user-badge">Cargando...</span>
+            <button id="btnCerrarSesion" class="btn-logout-mobile">Salir</button>
+        </div>
+    </div>
+
+    <main class="mobile-main-container">
+
+        <div id="vista-inicio" class="mobile-view-pane" style="display: block;">
+            <header class="top-header">
+                <h1>Visión General</h1>
+                <p>Bienvenido a tu centro de control móvil.</p>
+            </header>
+
+            <section id="contenedor-estadisticas" class="stats-grid">
+                <div class="stat-card">
+                    <h3>Nuevas Solicitudes</h3>
+                    <p class="stat-number" id="statNuevas">...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Eventos Próximos</h3>
+                    <p class="stat-number" id="statProximas">...</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Histórico</h3>
+                    <p class="stat-number" id="statConfirmadas">...</p>
+                </div>
+            </section>
+
+            <section class="bamboo-mobile-card" style="padding: 16px;">
+                <h2 style="font-family: 'Playfair Display', serif; color: var(--bamboo-pino); font-size: 1.3rem; margin-bottom: 2px;">📅 Agenda Semanal</h2>
+                <p style="color: var(--bamboo-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 14px;">Próximos 7 días hábiles</p>
+                <div id="contenedorAgendaSemanal" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            </section>
+        </div>
+
+        <div id="vista-precios" class="mobile-view-pane" style="display: none;">
+            <header class="top-header">
+                <h1>Precios y Tarifas</h1>
+                <p>Ajusta los costos base sincronizados en el cotizador.</p>
+            </header>
+
+            <div class="config-box">
+                <form id="formPrecios" class="config-grid">
+                    <div class="input-group"><label>Paquete 1 (Lunes a Jueves)</label><input type="number" id="precio_p1_sem" required></div>
+                    <div class="input-group"><label>Paquete 1 (Viernes a Domingo)</label><input type="number" id="precio_p1_fin" required></div>
+                    <div class="input-group"><label>Paquete 2 (Lunes a Jueves)</label><input type="number" id="precio_p2_sem" required></div>
+                    <div class="input-group"><label>Paquete 2 (Viernes a Domingo)</label><input type="number" id="precio_p2_fin" required></div>
+                    <div class="input-group"><label>Paquete 3 (Lunes a Jueves)</label><input type="number" id="precio_p3_sem" required></div>
+                    <div class="input-group"><label>Paquete 3 (Viernes a Domingo)</label><input type="number" id="precio_p3_fin" required></div>
+                    <div class="input-group"><label>Paquete 4 (Lunes a Jueves)</label><input type="number" id="precio_p4_sem" required></div>
+                    <div class="input-group"><label>Paquete 4 (Viernes a Domingo)</label><input type="number" id="precio_p4_fin" required></div>
+                    <div class="input-group"><label>Costo Hora Extra</label><input type="number" id="precio_hora" required></div>
+                    <div class="input-group"><label>Costo Silla Extra</label><input type="number" id="precio_silla" required></div>
+                    <div class="input-group"><label>Costo Mesa Extra</label><input type="number" id="precio_mesa" required></div>
+                    <button type="submit" class="btn-guardar-precios">Guardar Cambios</button>
+                </form>
+                <div id="mensajeConfig" class="mensaje-config"></div>
+            </div>
+        </div>
+
+        <div id="vista-reservaciones" class="mobile-view-pane" style="display: none;">
+            <header class="top-header">
+                <h1>Reservaciones</h1>
+                <p>Buscador y bitácora operativa de solicitudes.</p>
+            </header>
+
+            <div class="bamboo-mobile-card" style="padding: 14px;">
+                <div class="config-grid">
+                    <div class="input-group"><label>🔍 Buscar Cliente</label><input type="text" id="filtroNombre" class="editable-input" placeholder="Nombre..."></div>
+                    <div class="input-group">
+                        <label>📅 Mes</label>
+                        <select id="filtroMes" class="editable-input">
+                            <option value="todos">Todos los meses</option>
+                            <option value="01">Enero</option><option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option><option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option><option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>⏳ Año</label><select id="filtroAnio" class="editable-input"><option value="todos">Todos</option><option value="2026">2026</option><option value="2027">2027</option></select></div>
+                    <div class="input-group">
+                        <label>📌 Estado</label>
+                        <select id="filtroEstado" class="editable-input">
+                            <option value="todos">Todos</option><option value="en_carrito">En Carrito</option><option value="visita_agendada">Visita Agendada</option><option value="pendiente_pago">Pendiente de Pago</option><option value="confirmada">Confirmada</option><option value="concluido">Concluido</option><option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <button id="btnLimpiarFiltros" class="btn-volver">🧹 Limpiar Filtros</button>
+                </div>
+            </div>
+
+            <div class="tabla-contenedor">
+                <table class="bamboo-tabla">
+                    <thead><tr><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr></thead>
+                    <tbody id="tablaReservasBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="vista-detalle-reserva" class="mobile-view-pane" style="display: none;">
+            <header class="top-header">
+                <h1>Detalle del Evento</h1>
+                <span id="detalleFolio" class="folio-text">Folio: --</span>
+                <div class="config-grid" style="margin-top: 14px;">
+                    <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
+                    <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
+                    <button id="btnEliminarReserva" class="btn-volver" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar</button>
+                </div>
+            </header>
+
+            <div class="config-grid">
+                <div class="bamboo-mobile-card">
+                    <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">👤 Datos del Cliente</h3>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Nombre:</strong> <span id="detNombre"></span></p>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Correo:</strong> <span id="detCorreo"></span></p>
+                    <p style="font-size:0.85rem;"><strong>Teléfono:</strong> <span id="detTelefono"></span></p>
+                </div>
+                <div class="bamboo-mobile-card">
+                    <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">📅 Estatus del Evento</h3>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Fecha:</strong> <span id="detFecha"></span></p>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Horario:</strong> <span id="detHorario"></span></p>
+                    <p style="font-size:0.85rem;"><strong>Estado:</strong> <span id="detEstado" class="badge"></span></p>
+                </div>
+                <div class="bamboo-mobile-card">
+                    <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">📦 Paquete y Extras</h3>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Paquete:</strong> <span id="detPaquete"></span></p>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Horas Extras:</strong> <span id="detHorasExtra"></span></p>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Sillas Extras:</strong> <span id="detSillas"></span></p>
+                    <p style="font-size:0.85rem;"><strong>Mesas Extras:</strong> <span id="detMesas"></span></p>
+                </div>
+                <div class="bamboo-mobile-card">
+                    <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">⭐ Detalles Extra</h3>
+                    <p style="font-size:0.85rem; font-style: italic; color: var(--bamboo-muted);" id="detdatos"></p>
+                </div>
+                <div id="resumen-financiero" class="bamboo-mobile-card" style="text-align: center; border-top: 4px solid var(--bamboo-dorado);">
+                    <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">💰 Resumen Financiero</h3>
+                    <p style="font-size:0.85rem;">Total Contratado: <span id="detTotal" style="font-weight:700;"></span></p>
+                    <p style="font-size:0.85rem; color:#2D6A4F;">Anticipado en Caja: <span id="detPagado" style="font-weight:700;"></span></p>
+                    <div style="margin-top: 10px; border-top: 1px dashed var(--bamboo-border); padding-top: 8px;">
+                        <span style="font-size:0.75rem; font-weight:700; color:#721C24;">SALDO RESTANTE PENDIENTE</span>
+                        <h2 id="detPendiente" style="color: #721C24; font-size: 1.6rem; margin-top: 2px;">$0.00</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bamboo-mobile-card" style="margin-top: 10px;">
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--bamboo-pino); margin-bottom: 10px; font-size: 1.1rem;">📜 Auditoría de Cambios</h3>
+                <div id="contenedorListaHistorial" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            </div>
+            <button id="btnVolverReservas" class="btn-volver" style="margin-bottom: 16px;">← Volver al Listado</button>
+        </div>
+
+        <div id="vista-crear" class="mobile-view-pane" style="display: none;">
+            <header class="top-header">
+                <h1>Centro de Agendación</h1>
+                <p>Completa las etapas del trámite operativo.</p>
+            </header>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 16px; background: #ffffff; padding: 6px; border-radius: 10px; border: 1px solid var(--bamboo-border);">
+                <button id="btnModoReserva" class="btn-accion activo" style="margin:0 !important; height:40px; font-size:0.75rem;">📅 Reservación</button>
+                <button id="btnModoVisita" class="btn-volver" style="margin:0 !important; height:40px; font-size:0.75rem; border-color:#8C8A85;">👤 Visita Salón</button>
+            </div>
+
+            <div class="config-box">
+                <div id="crear-paso1" class="config-grid">
+                    <h3 id="tituloPaso1" style="font-size:1rem; margin-bottom:10px; color:var(--bamboo-pino);">Paso 1: Datos del Cliente</h3>
+                    <div class="input-group"><label>Nombre</label><input type="text" id="nuevoNombre" placeholder="Nombre completo"></div>
+                    <div class="input-group"><label>Teléfono</label><input type="number" id="nuevoTelefono" placeholder="Celular a 10 dígitos"></div>
+                    <div class="input-group"><label>Correo (Opcional)</label><input type="email" id="nuevoCorreo" placeholder="correo@ejemplo.com"></div>
+                    <div id="grupoHoraVisita" class="input-group" style="display: none;"><label>⏰ Hora Asistencia</label><input type="time" id="nuevaHoraVisita" value="16:00"></div>
+                    <div id="grupoNotasVisita" class="input-group" style="display: none;"><label>📝 Notas de Visita</label><textarea id="nuevasNotasVisita" rows="3" placeholder="Especificaciones rápidas..."></textarea></div>
+                    <button id="btnContinuarCalendario" class="btn-guardar-precios">Avanzar al Calendario →</button>
+                </div>
+
+                <div id="crear-paso2" class="config-grid" style="display: none;">
+                    <h3 id="tituloPaso2" style="font-size:1rem; margin-bottom:10px; color:var(--bamboo-pino);">Paso 2: Fecha del Evento</h3>
+                    <div class="calendario-bamboo-card">
+                        <div class="cal-header-top">
+                            <button id="btnMesAnterior" class="btn-nav-cal">‹</button>
+                            <div><h4 id="mesAnioActual" class="cal-month-title">--</h4><div id="anioSubtitulo" class="cal-year-subtitle">--</div></div>
+                            <button id="btnMesSiguiente" class="btn-nav-cal">›</button>
+                        </div>
+                        <div class="cal-dias-semana-grid"><div>DO</div><div>LU</div><div>MA</div><div>MI</div><div>JU</div><div>VI</div><div>SA</div></div>
+                        <div id="calendarioGrid" class="cal-grid-sistema"></div>
+                        <div class="cal-leyenda-footer">
+                            <div class="leyenda-item"><div class="leyenda-box" style="background-color: #F4EFEA;"></div> Libre</div>
+                            <div class="leyenda-item"><div class="leyenda-box" style="background-color: var(--bamboo-pino);"></div> Ocupado</div>
+                            <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E2ECE9;"></div> Visita</div>
+                        </div>
+                    </div>
+                    <p id="fechaSeleccionadaTexto" style="text-align: center; font-weight: 700; color: var(--bamboo-pino-light); margin: 8px 0; font-size:0.85rem;">Fecha: No seleccionada</p>
+                    <button id="btnRegresarPaso1" class="btn-volver">← Regresar</button>
+                    <button id="btnContinuarPaso3" class="btn-accion">Continuar Paso 3 →</button>
+                    <button id="btnGuardarNuevaVisita" class="btn-accion" style="background-color:#2D6A4F; display:none;">✅ Completar Cita de Visita</button>
+                </div>
+
+                <div id="crear-paso3" class="config-grid" style="display: none;">
+                    <h3 style="font-size:1rem; margin-bottom:6px; color:var(--bamboo-pino);">Paso 3: Cotización y Cierre</h3>
+                    <div class="bamboo-mobile-card" style="background:var(--bamboo-crema); text-align:center; padding:12px; margin-bottom:10px;">
+                        <span style="font-size:0.75rem; font-weight:700; display:block;">FECHA COMPROMISO:</span>
+                        <strong id="fechaSeleccionadaPaso3" style="color:var(--bamboo-pino-light);">-- / -- / ----</strong>
+                    </div>
+                    <div style="text-align:center; margin-bottom:14px;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--bamboo-muted);">MONTO TOTAL ESTIMADO EN VIVO</span>
+                        <h2 id="totalEnVivoCrear" style="color: var(--bamboo-pino); font-size: 1.8rem;">$0.00</h2>
+                    </div>
+                    <div class="input-group">
+                        <label>Horario Base</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="time" id="nuevaHoraInicio" value="14:00"> <span>a</span> <input type="time" id="nuevaHoraFin" value="22:00">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Paquete</label>
+                        <select id="nuevoPaquete" class="editable-input">
+                            <option value="Ninguno">Ninguno</option>
+                            <option value="Paquete 1 (30 personas)">Paquete 1 (30 p.)</option>
+                            <option value="Paquete 2 (50 personas)">Paquete 2 (50 p.)</option>
+                            <option value="Paquete 3 (70 personas)">Paquete 3 (70 p.)</option>
+                            <option value="Paquete 4 (100 personas)">Paquete 4 (100 p.)</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>Horas Extra (Max 3)</label><input type="number" id="nuevasHoras" value="0" min="0" max="3" onkeydown="return false;"></div>
+                    <div class="input-group"><label>Sillas Extra</label><input type="number" id="nuevasSillas" value="0" min="0"></div>
+                    <div class="input-group"><label>Mesas Extra</label><input type="number" id="nuevasMesas" value="0" min="0"></div>
+                    <div class="input-group"><label>Abonar Anticipo ($)</label><input type="number" id="nuevoAnticipo" value="0" min="0" placeholder="Ej. 2000"></div>
+                    <div class="input-group"><label>Solicitudes Especiales / Detalles Extra</label><textarea id="nuevasSolicitudes" rows="3" placeholder="Notas internas..."></textarea></div>
+                    <button id="btnRegresarPaso2" class="btn-volver">← Regresar</button>
+                    <button id="btnGuardarNuevaReserva" class="btn-accion" style="background-color: #2D6A4F;">✅ Confirmar e Inyectar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="vista-calendario" class="mobile-view-pane" style="display: none;">
+            <header class="top-header">
+                <h1>Calendario Maestro</h1>
+                <p>Bitácora global de compromisos comerciales.</p>
+            </header>
+
+            <div class="calendario-bamboo-card">
+                <div class="cal-header-top">
+                    <button id="btnGAnterior" class="btn-nav-cal">‹</button>
+                    <div><h4 id="mesGActual" class="cal-month-title">--</h4><div id="anioGSubtitulo" class="cal-year-subtitle">--</div></div>
+                    <button id="btnGSiguiente" class="btn-nav-cal">›</button>
+                </div>
+                <div class="cal-dias-semana-grid"><div>DO</div><div>LU</div><div>MA</div><div>MI</div><div>JU</div><div>VI</div><div>SA</div></div>
+                <div id="calendarioGiganteGrid" class="cal-grid-sistema"></div>
+                <div class="cal-leyenda-footer">
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #FAF8F5; border:1px solid var(--bamboo-border);"></div> Libre</div>
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: var(--bamboo-pino);"></div> Ocupado</div>
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E2ECE9;"></div> Visita</div>
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E3ECF5;"></div> Finalizada</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="vista-usuarios" class="mobile-view-pane" style="display: none;">
+            <header class="top-header">
+                <h1>Staff y Personal</h1>
+                <p>Matriz de privilegios de acceso corporativo.</p>
+            </header>
+
+            <div class="bamboo-mobile-card" style="padding: 12px; margin-bottom: 12px;">
+                <div class="config-grid">
+                    <div class="input-group"><label>🔍 Buscar Registro</label><input type="text" id="filtroUsuarioBusqueda" class="editable-input" placeholder="Nombre o cel..."></div>
+                    <div class="input-group">
+                        <label>👥 Tipo Perfil</label>
+                        <select id="filtroUsuarioTipo" class="editable-input">
+                            <option value="todos">Todos los perfiles</option>
+                            <option value="staff">Administración / Staff</option>
+                            <option value="clientes">Solo Clientes</option>
+                        </select>
+                    </div>
+                    <button id="btnLimpiarFiltrosUsuarios" class="btn-volver">🧹 Limpiar Filtros</button>
+                </div>
+            </div>
+
+            <div class="bamboo-panel-blanco">
+                <table class="bamboo-tabla-usuarios">
+                    <thead><tr><th>Usuario</th><th>Rol</th><th style="text-align:center;">Acciones</th></tr></thead>
+                    <tbody id="tablaUsuariosBody"></tbody>
+                </table>
+            </div>
+
+            <div id="modalInfoUsuario" class="bamboo-modal-sistema" style="display: none;">
+                <div class="modal-bamboo-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--bamboo-border); padding-bottom:6px;">
+                        <h3 style="color:var(--bamboo-pino); font-size:1.1rem;">📋 Expediente Personal</h3>
+                        <button class="btn-cerrar-modal-x" onclick="cerrarModalUsuarios('modalInfoUsuario')">×</button>
+                    </div>
+                    <div id="contenedorInfoPersonal" style="display:flex; flex-direction:column; gap:10px;"></div>
+                </div>
+            </div>
+
+            <div id="modalPermisosUsuario" class="bamboo-modal-sistema" style="display: none;">
+                <div class="modal-bamboo-card" style="max-height:85vh; overflow-y:auto;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--bamboo-border); padding-bottom:6px;">
+                        <div>
+                            <h3 style="color:var(--bamboo-pino); font-size:1.1rem;">⚙️ Llaves de Acceso</h3>
+                            <p id="subtituloPermisosNombre" style="font-size:0.75rem; color:var(--bamboo-muted); font-weight:700;"></p>
+                        </div>
+                        <button class="btn-cerrar-modal-x" onclick="cerrarModalUsuarios('modalPermisosUsuario')">×</button>
+                    </div>
+                    <form id="formMatrizPermisos" class="config-grid">
+                        <div id="segmentosPermisosContenedor"></div>
+                        <div style="display:flex; gap:10px; border-top:1px solid var(--bamboo-border); padding-top:12px; margin-top:8px;">
+                            <button type="button" class="btn-volver" onclick="cerrarModalUsuarios('modalPermisosUsuario')" style="margin:0 !important; width:50%;">Cerrar</button>
+                            <button type="submit" class="btn-accion" style="margin:0 !important; width:50%; background-color:var(--bamboo-pino);">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="mobile-bottom-navigation">
+        <button id="btnMenuInicio" class="menu-item activo"><span class="menu-item-icon">🏠</span><span>Inicio</span></button>
+        <button id="btnMenuReservas" class="menu-item"><span class="menu-item-icon">📋</span><span>Reservas</span></button>
+        <button id="btnMenuCrear" class="menu-item"><span class="menu-item-icon">➕</span><span>Crear</span></button>
+        <button id="btnMenuCalendario" class="menu-item"><span class="menu-item-icon">📆</span><span>Calendario</span></button>
+        <button id="btnMenuUsuarios" class="menu-item"><span class="menu-item-icon">👥</span><span>Staff</span></button>
+        <button id="btnMenuPrecios" class="menu-item"><span class="menu-item-icon">⚙️</span><span>Tarifas</span></button>
+    </div>
+
+    <div id="modalAnticipo" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color:var(--bamboo-pino); margin-bottom:6px;">Registrar Abono</h3>
+            <p id="textoDeuda" style="font-size:0.85rem; color:var(--bamboo-muted); margin-bottom:12px;"></p>
+            <input type="number" id="inputMontoAnticipo" placeholder="Cantidad ($)" class="search-input" style="border-color:var(--bamboo-pino);">
+            <p id="errorAnticipo" style="color:red; font-size:0.75rem; font-weight:700; margin-top:6px; display:none;"></p>
+            <div style="display:flex; gap:10px; margin-top:14px;">
+                <button id="btnCerrarModal" class="btn-volver" style="margin:0 !important; width:50%;">Atrás</button>
+                <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero" style="margin:0 !important; width:50%;">Abonar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalConfirmacion" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <h3 style="color:var(--bamboo-pino); margin-bottom:8px;">¿Proceder con la acción?</h3>
+            <p id="textoConfirmacion" style="font-size:0.85rem; color:var(--bamboo-muted); margin-bottom:16px;"></p>
+            <div style="display:flex; gap:10px;">
+                <button id="btnCancelarConfirmacion" class="btn-volver" style="margin:0 !important; width:50%;">No</button>
+                <button id="btnAceptarConfirmacion" class="btn-accion" style="margin:0 !important; width:50%;">Sí</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalAlerta" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <h3 style="color:var(--bamboo-pino); margin-bottom:8px;">Aviso Operativo</h3>
+            <p id="textoAlerta" style="font-size:0.85rem; color:var(--bamboo-muted); margin-bottom:16px;"></p>
+            <button id="btnAceptarAlerta" class="btn-accion" style="margin:0 !important;">Entendido</button>
+        </div>
+    </div>
+
+    <div id="modalMotivoCambio" class="modal-bamboo-overlay">
+        <div>
+            <h4 style="color:var(--bamboo-pino); font-family:'Playfair Display', serif; font-size:1.2rem; margin-bottom:6px;">📝 Justificación del Cambio</h4>
+            <p style="font-size:0.8rem; color:#6E6C68; margin-bottom:12px;">Escribe el motivo del cambio para el ticket de auditoría:</p>
+            <textarea id="txtMotivoCambioInput" rows="3" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--bamboo-border); font-family:inherit; font-size:0.9rem; resize:none;" placeholder="Ej. Cliente solicitó reajuste de mesas..."></textarea>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+                <button id="btnCancelarMotivo" class="btn-volver" style="margin:0 !important; padding:0 15px; height:40px;">Atrás</button>
+                <button id="btnAceptarMotivo" class="btn-accion" style="margin:0 !important; padding:0 15px; height:40px; background-color:#2D6A4F;">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="panel.js"></script>
+</body>
+</html>

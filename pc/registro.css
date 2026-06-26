@@ -1,0 +1,210 @@
+/* ========================================================
+   ESTILOS COMPARTIDOS Y CLONADOS DEL LOGIN DE BAMBOO
+   ======================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+}
+
+/* --- Fondo de Video --- */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+#bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 36, 23, 0.4);
+}
+
+/* --- Posicionamiento del Recuadro --- */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* --- El Recuadro Cremita (MISMO TAMAÑO EXACTO) --- */
+.login-box {
+    background-color: #F9F6F0;
+    padding: 3.2rem 5rem; /* Ajustado sutilmente el alto para compensar los nuevos inputs */
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 600px; /* Ancho idéntico de 600px */
+    text-align: center;
+    animation: fadeIn 1s ease-out; 
+}
+
+/* --- Textos y Logo --- */
+.logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: #1A3626;
+    letter-spacing: 5px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #5C7A68;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* --- Formulario --- */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 1rem;
+    color: #1A3626;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 16px; /* Ajustado para un balance perfecto en el espacio vertical */
+    border: 1px solid #D1D9D4;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #40916C;
+    box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.2);
+}
+
+/* --- Botón --- */
+.btn-ingresar {
+    width: 100%;
+    padding: 18px;
+    background-color: #2D6A4F; 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem; /* Ajustado sutilmente por el texto largo */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-ingresar:hover {
+    background-color: #1B4332; 
+}
+
+/* --- Enlaces de Abajo --- */
+.enlaces-extra {
+    margin-top: 25px;
+    font-size: 1rem; 
+    color: #5C7A68;
+}
+
+.enlaces-extra a {
+    color: #2D6A4F;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.enlaces-extra a:hover {
+    text-decoration: underline;
+}
+
+.volver-inicio {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 0.95rem;
+    color: #888 !important;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Notificaciones Integradas --- */
+.notificacion {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    display: none; /* Controlado de forma nativa por JS */
+}
+.notificacion.exito {
+    background-color: #D8F3DC;
+    color: #1B4332;
+    border: 1px solid #95D5B2;
+}
+.notificacion.error {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+}
+
+/* ========================================================
+   SECCIÓN NUEVA: INTERFAZ DE CAPTURA OTP (MODAL DE CRISTAL)
+   ======================================================== */
+.bamboo-modal-otp {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 36, 23, 0.5); backdrop-filter: blur(8px);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+}
+.modal-otp-card {
+    background: #F9F6F0; padding: 45px; border-radius: 16px;
+    width: 100%; max-width: 420px; text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); box-sizing: border-box;
+}
+.otp-icon { font-size: 2.8rem; margin-bottom: 15px; }
+.modal-otp-card h2 { color: #1A3626; margin: 0 0 10px 0; font-family: 'Playfair Display', serif; font-size: 2rem; }
+.modal-otp-card p { font-size: 0.95rem; color: #5C7A68; line-height: 1.5; margin-bottom: 25px; }
+.otp-inputs-box { display: flex; justify-content: center; gap: 14px; margin-bottom: 25px; }
+.otp-digit {
+    width: 55px; height: 60px; border: 1px solid #D1D9D4; border-radius: 8px;
+    font-size: 1.8rem; font-weight: 700; text-align: center; background: #FFFFFF; color: #1A3626;
+}
+.otp-digit:focus { outline: none; border-color: #40916C; box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.1); }
+.btn-otp-verify {
+    width: 100%; background-color: #2D6A4F; color: white; padding: 16px;
+    border: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem; cursor: pointer; text-transform: uppercase;
+}
+.btn-otp-verify:hover { background-color: #1B4332; }
+.btn-otp-cancelar { background: none; border: none; color: #888; font-size: 0.9rem; cursor: pointer; margin-top: 15px; text-decoration: underline; }
+.btn-otp-cancelar:hover { color: #1A3626; }

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMBOO | Panel de Control</title>
+    <link rel="icon" type="image/svg+xml" href="favico.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <!-- Barra Lateral de Navegación -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo-title-sidebar">BAMBOO</h2>
+                <p class="role-badge">Panel Administrativo</p>
+            </div>
+
+            <nav class="menu">
+                <a href="#" id="btnMenuInicio" class="menu-item activo">Inicio (Resumen)</a>
+                <a id="btnMenuCalendario" class="menu-item">Calendario</a>
+                <a href="#" id="btnMenuCrear" class="menu-item">Crear Reservación</a>
+                <a href="#" id="btnMenuReservas" class="menu-item">Reservaciones</a>
+                <a href="#" id="btnMenuPrecios" class="menu-item">Precios y Configuración</a>
+                <a href="#" id="btnMenuUsuarios" class="menu-item">Usuarios del Sistema</a>
+            </nav>
+
+           
+           
+
+            <div class="sidebar-footer">
+                <p id="nombreUsuario" class="user-name">Cargando...</p>
+                <button id="btnCerrarSesion" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <!-- Área Principal de Contenido -->
+        <!-- Área Principal de Contenido -->
+        <main class="main-content">
+            
+            <!-- VISTA 1: INICIO (Dashboard) -->
+            <div id="vista-inicio">
+                <header class="top-header">
+                    <h1>Visión General</h1>
+                    <p>Bienvenido a tu centro de control.</p>
+                </header>
+
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Nuevas Solicitudes (Carrito)</h3>
+                        <p class="stat-number" id="statNuevas">...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Eventos Próximos (Confirmados)</h3>
+                        <p class="stat-number" id="statProximas">...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Histórico (Confirmadas)</h3>
+                        <p class="stat-number" id="statConfirmadas">...</p>
+                    </div>
+                </section>
+
+                <!-- 📅 SECCIÓN REPARADA: Agenda Operativa Semanal 📅 -->
+                <section class="recent-activity" style="background: #ffffff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); font-family: 'Montserrat', sans-serif;">
+                    <h2 style="font-family: 'Playfair Display', serif; color: #1A3626; margin-bottom: 5px; font-size: 1.6rem;">📅 Agenda Operativa Semanal</h2>
+                    <p style="color: #52796F; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; margin-top: 0; text-transform: uppercase; letter-spacing: 0.5px;">Monitoreo de compromisos para los próximos 7 días</p>
+                    
+                    <div id="contenedorAgendaSemanal" style="display: flex; flex-direction: column; gap: 15px;">
+                        <!-- Aquí se inyectarán las tarjetas dinámicamente -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- VISTA 2: PRECIOS Y CONFIGURACIÓN -->
+            <div id="vista-precios" style="display: none;">
+    <header class="top-header">
+        <h1>Precios y Configuración</h1>
+        <p>Ajusta los costos base para el cotizador de clientes.</p>
+    </header>
+
+    <div class="config-box">
+        <form id="formPrecios">
+            <div class="config-grid">
+                <div class="input-group">
+                    <label>Precio Paquete 1 (Lunes a Jueves)</label>
+                    <input type="number" id="precio_p1_sem" required>
+                </div>
+                <div class="input-group">
+                    <label>Precio Paquete 1 (Viernes a Domingo)</label>
+                    <input type="number" id="precio_p1_fin" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Precio Paquete 2 (Lunes a Jueves)</label>
+                    <input type="number" id="precio_p2_sem" required>
+                </div>
+                <div class="input-group">
+                    <label>Precio Paquete 2 (Viernes a Domingo)</label>
+                    <input type="number" id="precio_p2_fin" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Precio Paquete 3 (Lunes a Jueves)</label>
+                    <input type="number" id="precio_p3_sem" required>
+                </div>
+                <div class="input-group">
+                    <label>Precio Paquete 3 (Viernes a Domingo)</label>
+                    <input type="number" id="precio_p3_fin" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Precio Paquete 4 (Lunes a Jueves)</label>
+                    <input type="number" id="precio_p4_sem" required>
+                </div>
+                <div class="input-group">
+                    <label>Precio Paquete 4 (Viernes a Domingo)</label>
+                    <input type="number" id="precio_p4_fin" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Costo por Hora Extra</label>
+                    <input type="number" id="precio_hora" required>
+                </div>
+                <div class="input-group">
+                    <label>Costo por Silla Extra</label>
+                    <input type="number" id="precio_silla" required>
+                </div>
+                <div class="input-group">
+                    <label>Costo por Mesa Extra</label>
+                    <input type="number" id="precio_mesa" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-guardar-precios">Guardar Cambios</button>
+        </form>
+        <div id="mensajeConfig" class="mensaje-config"></div>
+    </div>
+</div>
+                 
+           <!-- VISTA 3: RESERVACIONES (La Tabla Maestra) -->
+            <div id="vista-reservaciones" style="display: none;">
+    <header class="top-header">
+        <h1>Control de Reservaciones</h1>
+        <p class="subtitle-text">Gestión, auditoría y filtrado de eventos en tiempo real</p>
+    </header>
+
+    <div class="bamboo-filtros-container" style="background: #ffffff; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); font-family: 'Montserrat', sans-serif;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; align-items: end;">
+            
+            <div class="input-group" style="margin: 0;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #52796F; text-transform: uppercase; margin-bottom: 5px; display: block;">🔍 Buscar Cliente</label>
+                <input type="text" id="filtroNombre" class="editable-input" placeholder="Ej. Carlos Mendoza" style="width: 100%; margin: 0; padding: 8px 12px;">
+            </div>
+
+            <div class="input-group" style="margin: 0;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #52796F; text-transform: uppercase; margin-bottom: 5px; display: block;">📅 Mes del Evento</label>
+                <select id="filtroMes" class="editable-input" style="width: 100%; margin: 0; padding: 8px 12px;">
+                    <option value="todos">Todos los meses</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+
+            <div class="input-group" style="margin: 0;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #52796F; text-transform: uppercase; margin-bottom: 5px; display: block;">⏳ Año</label>
+                <select id="filtroAnio" class="editable-input" style="width: 100%; margin: 0; padding: 8px 12px;">
+                    <option value="todos">Todos los años</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                </select>
+            </div>
+
+            <div class="input-group" style="margin: 0;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #52796F; text-transform: uppercase; margin-bottom: 5px; display: block;">📌 Estado</label>
+                <select id="filtroEstado" class="editable-input" style="width: 100%; margin: 0; padding: 8px 12px;">
+                    <option value="todos">Todos los estados</option>
+                    <option value="en_carrito">En Carrito</option>
+                    <option value="visita_agendada">Visita Agendada</option>
+                    <option value="pendiente_pago">Pendiente de Pago</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="concluido">Concluido</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+
+            <div>
+                <button id="btnLimpiarFiltros" class="btn-volver" style="width: 100%; margin: 0; padding: 10px; border-color: #8C8A85; color: #6E6C68; font-size: 0.85rem; font-weight: 600;">🧹 Limpiar Filtros</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="tabla-contenedor">
+        <table class="bamboo-tabla">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Paquete</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaReservasBody">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+            <!-- VISTA 4: DETALLE DE RESERVA (La vista segmentada) -->
+            <div id="vista-detalle-reserva" style="display: none;">
+    <header class="top-header detail-header">
+        <div>
+            <h1>Detalle del Evento</h1>
+            <p id="detalleFolio" class="folio-text">Cargando...</p>
+        </div>
+        <div class="acciones-detalle">
+            <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
+            <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
+            <button id="btnEliminarReserva" class="btn-accion" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar Reserva</button>
+            <button id="btnVolverReservas" class="btn-volver">← Volver</button>
+        </div>
+    </header>
+    
+    <div class="detalle-grid">
+        <div class="detalle-card">
+            <h3>👤 Datos del Cliente</h3>
+            <hr>
+            <p><strong>Nombre:</strong> <span id="detNombre"></span></p>
+            <p><strong>Correo:</strong> <span id="detCorreo"></span></p>
+            <p><strong>Teléfono:</strong> <span id="detTelefono"></span></p>
+        </div>
+
+        <div class="detalle-card">
+            <h3>📅 Detalles del Evento</h3>
+            <hr>
+            <p><strong>Fecha:</strong> <span id="detFecha"></span></p>
+            <p><strong>Horario:</strong> <span id="detHorario"></span></p>
+            <p><strong>Estado:</strong> <span id="detEstado" class="badge"></span></p>
+        </div>
+
+        <div class="detalle-card">
+            <h3>📦 Paquete y Extras</h3>
+            <hr>
+            <p><strong>Paquete:</strong> <span id="detPaquete"></span></p>
+            <p><strong>Horas Extras:</strong> <span id="detHorasExtra"></span></p>
+            <p><strong>Sillas Extras:</strong> <span id="detSillas"></span></p>
+            <p><strong>Mesas Extras:</strong> <span id="detMesas"></span></p>
+        </div>
+
+        <div class="detalle-card">
+            <h3>⭐ Detalles Extra</h3>
+            <hr>
+            <p><strong>Informacion:</strong> <span id="detdatos"></span></p>
+        </div>
+
+        <div class="detalle-card finanzas-card">
+            <h3>💰 Resumen Financiero</h3>
+            <hr>
+            <div style="text-align: left; margin-bottom: 15px;">
+                <p><strong>Total del Evento:</strong> <span id="detTotal"></span></p>
+                <p><strong>Anticipo Pagado:</strong> <span id="detPagado" style="color: #2D6A4F;"></span></p>
+            </div>
+            <h3 style="font-size: 1.2rem;">Saldo Pendiente</h3>
+            <h2 id="detPendiente" class="total-precio" style="color: #721C24; margin-top: 5px;">$0.00</h2>
+        </div>
+    </div> <div class="bamboo-historial-box" style="margin-top: 30px; border-top: 2px solid #EAE6DF; padding-top: 25px;">
+        <h3 style="font-family: 'Playfair Display', serif; color: #1A3626; margin-bottom: 15px; font-size: 1.6rem;">📜 Historial de Modificaciones</h3>
+        <div id="contenedorListaHistorial" style="display: flex; flex-direction: column; gap: 12px;">
+            <p style="color: #8C8A85; font-style: italic;">No se registran modificaciones en esta reservación.</p>
+        </div>
+    </div>
+</div>
+
+             <!-- VISTA 5: CREAR RESERVACIÓN (Multi-pasos con selector de Visitas) -->
+            <div id="vista-crear" style="display: none;">
+    <header class="top-header">
+        <h1>Centro de Agendación BAMBOO</h1>
+        <p>Selecciona el tipo de trámite y completa la información por etapas.</p>
+    </header>
+
+    <!-- 🎛️ Selector de Modo de Operación Superior -->
+    <div style="display: flex; gap: 10px; margin-bottom: 25px; background: #FAF8F5; padding: 10px; border-radius: 12px; border: 1px solid #EAE6DF; max-width: 500px;">
+        <button id="btnModoReserva" class="btn-accion activo" style="margin: 0; width: 50%; font-weight: 700; padding: 10px;">📅 Agendar Reservación</button>
+        <button id="btnModoVisita" class="btn-volver" style="margin: 0; width: 50%; font-weight: 700; padding: 10px; border-color: #8C8A85;">👤 Agendar Visita</button>
+    </div>
+
+    <div class="config-box">
+        <div id="crear-paso1">
+            <h3 id="tituloPaso1">Paso 1: Datos del Cliente</h3>
+            <div class="config-grid">
+                <div class="input-group">
+                    <label>Nombre del Cliente</label>
+                    <input type="text" id="nuevoNombre" placeholder="Ej. Carlos Mendoza">
+                </div>
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="number" id="nuevoTelefono" placeholder="Ej. 9981234567">
+                </div>
+                <div class="input-group">
+                    <label>Correo Electrónico (Opcional)</label>
+                    <input type="email" id="nuevoCorreo" placeholder="ejemplo@correo.com">
+                </div>
+
+                <!-- ⚠️ Campos Exclusivos para el Flujo de Visitas (Ocultos por defecto) -->
+                <div id="grupoHoraVisita" class="input-group" style="display: none;">
+                    <label>⏰ Hora de Asistencia para ver el Salón</label>
+                    <input type="time" id="nuevaHoraVisita" class="editable-input" value="16:00">
+                </div>
+                <div id="grupoNotasVisita" class="input-group" style="grid-column: span 2; display: none;">
+                    <label>📝 Solicitudes Adicionales / Notas Extra de la Visita</label>
+                    <textarea id="nuevasNotasVisita" class="editable-input" rows="3" placeholder="Ej. El cliente quiere ver la capacidad de las mesas y la iluminación externa..." style="width: 100%; height: auto; padding: 10px;"></textarea>
+                </div>
+            </div>
+            <button id="btnContinuarCalendario" class="btn-guardar-precios">Continuar al Calendario →</button>
+        </div>
+
+        <!-- PASO 2: Calendario Gráfico Unificado -->
+        <div id="crear-paso2" style="display: none;">
+            <h3 id="tituloPaso2">Paso 2: Selecciona la Fecha</h3>
+            <div class="calendario-bamboo-card">
+                <div class="cal-header-top">
+                    <button id="btnMesAnterior" class="btn-nav-cal">‹</button>
+                    <div>
+                        <h4 id="mesAnioActual" class="cal-month-title">Junio</h4>
+                        <div id="anioSubtitulo" class="cal-year-subtitle">2026</div>
+                    </div>
+                    <button id="btnMesSiguiente" class="btn-nav-cal">›</button>
+                </div>
+
+                <div class="cal-dias-semana-grid">
+                    <div>DOM</div><div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div>
+                </div>
+
+                <div id="calendarioGrid" class="cal-grid-sistema"></div>
+
+                <div class="cal-leyenda-footer">
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #F4EFEA; border:1px solid #EAE6DF;"></div> DISPONIBLE</div>
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #233329;"></div> OCUPADO</div>
+                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E2ECE9;"></div> VISITA AGENDADA</div>
+                </div>
+            </div>
+            
+            <p id="fechaSeleccionadaTexto" style="text-align: center; font-weight: 600; color: #2D6A4F; margin-top: 15px;">Fecha: No seleccionada</p>
+            
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button id="btnRegresarPaso1" class="btn-volver">← Regresar</button>
+                
+                <!-- Botón estándar para seguir al Paso 3 (Modo Reservación) -->
+                <button id="btnContinuarPaso3" class="btn-accion" style="margin-top:0; width:100%;">Continuar Paso 3 →</button>
+                
+                <!-- ⚠️ Botón de Acción Final Inmediata (Modo Visita) -->
+                <button id="btnGuardarNuevaVisita" class="btn-accion" style="background-color: #2D6A4F; color: white; margin-top: 0; width: 100%; display: none;">✅ Completar agenda de visita</button>
+            </div>
+        </div>
+
+        <!-- PASO 3: Exclusivo de Reservación -->
+        <div id="crear-paso3" style="display: none;">
+            <h3>Paso 3: Servicios y Anticipo</h3>
+            
+            <div class="fecha-resumen-paso3">
+                <span>📅 Fecha Seleccionada para el Evento:</span>
+                <strong id="fechaSeleccionadaPaso3">-- / -- / ----</strong>
+            </div>
+
+            <div class="cotizador-en-vivo-box">
+                <span>Monto Total Estimado:</span>
+                <h2 id="totalEnVivoCrear" style="color: #1A3626; margin: 5px 0 0 0; font-size: 2rem;">$0.00</h2>
+            </div>
+
+            <div class="config-grid">
+                <div class="input-group">
+                    <label>Horario</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="time" id="nuevaHoraInicio" class="editable-input" value="14:00">
+                        <span style="align-self: center;">a</span>
+                        <input type="time" id="nuevaHoraFin" class="editable-input" value="22:00">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Paquete</label>
+                    <select id="nuevoPaquete" class="editable-input">
+                        <option value="Ninguno">Ninguno</option>
+                        <option value="Paquete 1 (30 personas)">Paquete 1 (30 personas)</option>
+                        <option value="Paquete 2 (50 personas)">Paquete 2 (50 personas)</option>
+                        <option value="Paquete 3 (70 personas)">Paquete 3 (70 personas)</option>
+                        <option value="Paquete 4 (100 personas)">Paquete 4 (100 personas)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Horas Extra (Máximo 3)</label>
+                    <input type="number" id="nuevasHoras" class="editable-input" value="0" min="0" max="3" onkeydown="return false;">
+                </div>
+                <div class="input-group">
+                    <label>Sillas Extra</label>
+                    <input type="number" id="nuevasSillas" class="editable-input" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label>Mesas Extra (Cada Mesa Incluye 10 sillas)</label>
+                    <input type="number" id="nuevasMesas" class="editable-input" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label>Anticipo Pagado ($)</label>
+                    <input type="number" id="nuevoAnticipo" class="editable-input" value="0" min="0" placeholder="Ej. 2000">
+                </div>
+                <div class="input-group" style="grid-column: span 2;">
+                    <label>Solicitudes Adicionales / Notas Extra</label>
+                    <textarea id="nuevasSolicitudes" class="editable-input" rows="3" placeholder="Ej. Requerimos que el montaje inicie desde temprano..." style="width: 100%; height: auto; padding: 10px;"></textarea>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button id="btnRegresarPaso2" class="btn-volver">← Regresar</button>
+                <button id="btnGuardarNuevaReserva" class="btn-accion" style="background-color: #2D6A4F; color: white; margin-top: 0; width: 100%;">✅ Confirmar y Agendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--VISTA 6-7 CALENDARIO INTERACTIVO-->
+
+<div id="vista-calendario" style="display: none;">
+    <header class="top-header">
+        <h1>Calendario Operativo Maestro</h1>
+        <p class="subtitle-text">Bitácora interactiva de fechas, visitas y eventos concluidos</p>
+    </header>
+
+    <div class="bamboo-panel-blanco" style="background: #ffffff; padding: 50px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; justify-content: center; width: 100%; max-width: 600px; margin: 20px auto;">
+        
+        <div class="calendario-bamboo-card" style="margin: 0; width: 100%;">
+            <div class="cal-header-top">
+                <button id="btnGAnterior" class="btn-nav-cal">‹</button>
+                <div>
+                    <h4 id="mesGActual" class="cal-month-title">Junio</h4>
+                    <div id="anioGSubtitulo" class="cal-year-subtitle">2026</div>
+                </div>
+                <button id="btnGSiguiente" class="btn-nav-cal">›</button>
+            </div>
+
+            <div class="cal-dias-semana-grid">
+                <div>DOM</div><div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div>
+            </div>
+
+            <div id="calendarioGiganteGrid" class="cal-grid-sistema"></div>
+
+            <div class="cal-leyenda-footer" style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #EAE6DF; font-size: 0.72rem; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                <div class="leyenda-item"><div class="leyenda-box" style="background-color: #FAF8F5; border:1px solid #EAE6DF; width:10px; height:10px; display:inline-block; margin-right:4px; border-radius:2px;"></div> DISPONIBLE</div>
+                <div class="leyenda-item"><div class="leyenda-box" style="background-color: #233329; width:10px; height:10px; display:inline-block; margin-right:4px; border-radius:2px;"></div> OCUPADO</div>
+                <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E2ECE9; width:10px; height:10px; display:inline-block; margin-right:4px; border-radius:2px;"></div> VISITA</div>
+                <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E3ECF5; font-size: 10x; border: 1px solid #B0C4DE; width:10px; height:10px; display:inline-block; margin-right:4px; border-radius:2px;"></div> CONCLUIDO</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--VISTA 7-8 VISTA DE USUARIOS Y SU CONFIGURACION-->
+
+<div id="vista-usuarios" style="display: none; padding: 20px; box-sizing: border-box;">
+    <header class="top-header">
+        <h1>Usuarios del Sistema</h1>
+        <p class="subtitle-text">Gestión de personal operativo, credenciales y matriz de capacidades</p>
+    </header>
+    
+     <div class="bamboo-filtros-container" style="background: #ffffff; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); font-family: 'Montserrat', sans-serif;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end;">
+            
+            <div class="input-group" style="margin: 0;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #52796F; text-transform: uppercase; margin-bottom: 5px; display: block;">🔍 Buscar Personal / Cliente</label>
+                <input type="text" id="filtroUsuarioBusqueda" class="editable-input" placeholder="Escribe un nombre o celular..." style="width: 100%; margin: 0; padding: 8px 12px;">
+            </div>
+
+            <div class="input-group" style="margin: 0;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #52796F; text-transform: uppercase; margin-bottom: 5px; display: block;">👥 Filtrar por Tipo de Perfil</label>
+                <select id="filtroUsuarioTipo" class="editable-input" style="width: 100%; margin: 0; padding: 8px 12px;">
+                    <option value="todos">Mostrar todos los registros</option>
+                    <option value="staff">Administración (Admin / Empleados)</option>
+                    <option value="clientes">Solo Clientes Registrados</option>
+                </select>
+            </div>
+
+            <div>
+                <button id="btnLimpiarFiltrosUsuarios" class="btn-volver" style="width: 100%; margin: 0; padding: 10px; border-color: #8C8A85; color: #6E6C68; font-size: 0.85rem; font-weight: 600;">🧹 Limpiar Filtros</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bamboo-panel-blanco" style="background: #ffffff; padding: 25px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-top: 20px;">
+        <table class="bamboo-tabla-usuarios" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 2px solid #EAE6DF; color: #233329; font-weight: 700; height: 40px;">
+                    <th>Usuario</th>
+                    <th>Correo Electrónico</th>
+                    <th>Rol Asignado</th>
+                    <th style="text-align: center;">Acciones Operativas</th>
+                </tr>
+            </thead>
+            <tbody id="tablaUsuariosBody">
+                </tbody>
+        </table>
+    </div>
+
+    <div id="modalInfoUsuario" class="bamboo-modal-sistema" style="display: none;">
+        <div class="modal-bamboo-card" style="max-width: 450px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EAE6DF; padding-bottom: 12px; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #233329; font-size: 1.3rem;">📋 Expediente de Usuario</h3>
+                <button class="btn-cerrar-modal-x" onclick="cerrarModalUsuarios('modalInfoUsuario')">×</button>
+            </div>
+            <div id="contenedorInfoPersonal" style="display: flex; flex-direction: column; gap: 15px;">
+                </div>
+        </div>
+    </div>
+
+    <div id="modalPermisosUsuario" class="bamboo-modal-sistema" style="display: none;">
+        <div class="modal-bamboo-card" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EAE6DF; padding-bottom: 12px; margin-bottom: 15px;">
+                <div>
+                    <h3 style="margin: 0; color: #233329; font-size: 1.3rem;">⚙️ Matriz de Capacidades</h3>
+                    <p id="subtituloPermisosNombre" style="margin: 4px 0 0 0; color: #52796F; font-size: 0.8rem; font-weight: 600;"></p>
+                </div>
+                <button class="btn-cerrar-modal-x" onclick="cerrarModalUsuarios('modalPermisosUsuario')">×</button>
+            </div>
+
+            <form id="formMatrizPermisos" style="display: flex; flex-direction: column; gap: 20px;">
+                <div id="segmentosPermisosContenedor">
+                    </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #EAE6DF; padding-top: 15px;">
+                    <button type="button" class="btn-cancelar-bamboo" onclick="cerrarModalUsuarios('modalPermisosUsuario')" style="background: #EAE6DF; color: #5C5A56; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancelar</button>
+                    <button type="submit" class="btn-guardar-bamboo" style="background: #233329; color: #FAF8F5; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+</div>
+
+            <!-- MODAL: ABONAR ANTICIPO -->
+            <div id="modalAnticipo" class="modal-overlay">
+                <div class="modal-content">
+                    <h3>Registrar Pago / Anticipo</h3>
+                    <p id="textoDeuda" style="margin-bottom: 15px; color: #5C7A68;"></p>
+                    <input type="number" id="inputMontoAnticipo" placeholder="Cantidad a abonar ($)" class="search-input" style="border: 1px solid #1A3626; color: #333;">
+                    <p id="errorAnticipo" style="color: red; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="btnCerrarModal" class="btn-volver">Cancelar</button>
+                        <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero">Confirmar Pago</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- MODALES DE SISTEMA (Reemplazan a los antiguos alert y confirm) -->
+            <!-- ========================================== -->
+            
+            <!-- Modal de Confirmación (Preguntas) -->
+            <div id="modalConfirmacion" class="modal-overlay">
+                <div class="modal-content" style="text-align: center;">
+                    <h3 style="color: #1A3626; margin-bottom: 10px;">Confirmación Requerida</h3>
+                    <p id="textoConfirmacion" style="color: #5C7A68; margin-bottom: 20px;">¿Seguro que deseas modificar los datos de esta reservación?</p>
+                    <div style="display: flex; justify-content: center; gap: 15px;">
+                        <button id="btnCancelarConfirmacion" class="btn-volver">Cancelar</button>
+                        <button id="btnAceptarConfirmacion" class="btn-accion" style="background-color: #2D6A4F; color: white;">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Alerta (Avisos de éxito o error) -->
+            <div id="modalAlerta" class="modal-overlay">
+                <div class="modal-content" style="text-align: center;">
+                    <h3 style="color: #1A3626; margin-bottom: 10px;">Aviso del Sistema</h3>
+                    <p id="textoAlerta" style="color: #5C7A68; margin-bottom: 20px;">Acción completada con éxito.</p>
+                    <div style="display: flex; justify-content: center;">
+                        <button id="btnAceptarAlerta" class="btn-accion" style="background-color: #2D6A4F; color: white;">Entendido</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Elegante del Sistema para redactar el Motivo de Modificación -->
+<div id="modalMotivoCambio" class="modal-bamboo-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); justify-content: center; align-items: center; z-index: 3000;">
+    <div style="background: #ffffff; padding: 30px; border-radius: 16px; max-width: 450px; width: 90%; box-shadow: 0 8px 30px rgba(0,0,0,0.15); font-family: 'Montserrat', sans-serif;">
+        <h4 style="color: #1A3626; font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-top: 0;">📝 Motivo de la Modificación</h4>
+        <p style="color: #6E6C68; font-size: 0.9rem; margin-bottom: 15px;">Por favor, describe brevemente la razón de este cambio en la reservación para guardarlo en la bitácora:</p>
+        <textarea id="txtMotivoCambioInput" rows="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #EAE6DF; resize: none; font-family: 'Montserrat', sans-serif;" placeholder="Ej. El cliente solicitó cambio por clima / Cambio de mesas extra..."></textarea>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button id="btnCancelarMotivo" class="btn-volver" style="padding: 8px 15px; margin: 0;">Cancelar</button>
+            <button id="btnAceptarMotivo" class="btn-accion" style="padding: 8px 20px; margin: 0; background-color: #2D6A4F; color: white;">💾 Guardar Historial</button>
+        </div>
+    </div>
+</div>
+
+        </main>
+
+    </div>
+
+    <!-- El Cadenero del Frontend -->
+    <script src="panel.js"></script>
+</body>
+</html>

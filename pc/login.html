@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMBOO | Acceso</title>
+    <link rel="icon" type="image/svg+xml" href="favico.svg">
+    <!-- Fuente elegante para el título (Playfair Display) y moderna para el texto (Montserrat) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <!-- Video de Fondo en Movimiento -->
+    <div class="video-background">
+        <!-- Enlace temporal a un video de naturaleza. Luego ponemos el tuyo de Bambús -->
+        <video autoplay muted loop id="bg-video">
+            <source src="../assets/e_b_e_a_da_ec_mp_.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div> <!-- Filtro oscuro sutil para que resalte el recuadro -->
+    </div>
+
+    <!-- Contenedor Central (El recuadro Cremita) -->
+    <div class="login-wrapper">
+        <div class="login-box">
+            <h1 class="logo-title">BAMBOO</h1>
+            <p class="subtitle">Bienvenido de nuevo</p>
+            
+            <div id="notificacion" class="notificacion"></div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-ingresar">Iniciar Sesión</button>
+            </form>
+
+            <div class="enlaces-extra">
+                <p>¿No tienes una cuenta? <a href="registro.html">Regístrate aquí</a></p>
+                <a href="../index.html" class="volver-inicio">← Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+  <script src="login.js"></script>
+</body>
+</html>

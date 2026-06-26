@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMBOO | Crear Cuenta</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="registro.css">
+</head>
+<body>
+
+    <div class="video-background">
+        <video autoplay loop muted playsinline id="bg-video">
+            <source src="../assets/e_b_e_a_da_ec_mp_.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <div class="login-wrapper">
+        <div class="login-box">
+            
+            <div id="alertaRegistro" class="notificacion"></div>
+
+            <header style="text-align: center;">
+                <h1 class="logo-title">BAMBOO</h1>
+                <p class="subtitle">Bienvenido, crea tu cuenta</p>
+            </header>
+
+            <form id="formRegistroUsuario">
+                <div class="input-group">
+                    <label for="regNombre">Nombre Completo</label>
+                    <input type="text" id="regNombre" placeholder="Ej. Alexander Moreno" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="regCorreo">Correo Electrónico</label>
+                    <input type="email" id="regCorreo" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="regTelefono">Número Celular (10 dígitos)</label>
+                    <input type="number" id="regTelefono" placeholder="9981234567" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="input-group" style="display: flex; gap: 20px; margin-bottom: 25px;">
+                    <div style="flex: 1;">
+                        <label for="regPassword">Contraseña</label>
+                        <input type="password" id="regPassword" placeholder="••••••••" minlength="6" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="regPasswordConfirm">Confirmar Contraseña</label>
+                        <input type="password" id="regPasswordConfirm" placeholder="••••••••" minlength="6" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-ingresar">Obtener código de verificación de numero</button>
+            </form>
+
+            <div class="enlaces-extra">
+                <p>¿Ya tienes una cuenta? <a href="login.html">Inicia Sesión aquí</a></p>
+                <a href="index.html" class="volver-inicio">← Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalVerificacionOTP" class="bamboo-modal-otp" style="display: none;">
+        <div class="modal-otp-card">
+            <div class="otp-icon">📱</div>
+            <h2>Verifica tu Número</h2>
+            <p>Hemos enviado un código de seguridad de 4 dígitos al número celular que proporcionaste. Ingrésalo para finalizar tu registro.</p>
+            
+            <form id="formValidarOTP">
+                <div class="otp-inputs-box">
+                    <input type="text" class="otp-digit" maxlength="1" required pattern="[0-9]">
+                    <input type="text" class="otp-digit" maxlength="1" required pattern="[0-9]">
+                    <input type="text" class="otp-digit" maxlength="1" required pattern="[0-9]">
+                    <input type="text" class="otp-digit" maxlength="1" required pattern="[0-9]">
+                </div>
+                <button type="submit" class="btn-otp-verify">Validar y Activar Cuenta</button>
+            </form>
+            <button class="btn-otp-cancelar" onclick="cancelarProcesoOTP()">Cancelar Registro</button>
+        </div>
+    </div>
+
+    <script src="registro.js"></script>
+</body>
+</html>

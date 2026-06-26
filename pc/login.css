@@ -1,0 +1,186 @@
+/* Reseteo básico y Tipografías */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden; /* Evita que la página tenga scroll en PC */
+}
+
+/* --- Fondo de Video (La imagen en movimiento) --- */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+#bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que el video llene toda la pantalla sin deformarse */
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 36, 23, 0.4); /* Filtro verde muy oscuro y semitransparente */
+}
+
+/* --- Posicionamiento del Recuadro --- */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* --- El Recuadro Cremita (MÁS GRANDE) --- */
+.login-box {
+    background-color: #F9F6F0; /* Color crema suave */
+    padding: 4rem 5rem; /* Más espacio interno */
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 600px; /* Tamaño máximo ampliado de 450 a 600px */
+    text-align: center;
+    animation: fadeIn 1s ease-out; 
+}
+
+/* --- Textos y Logo (MÁS GRANDES) --- */
+.logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem; /* Ampliado para mayor impacto */
+    color: #1A3626; /* Verde oscuro elegante */
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #5C7A68; /* Verde grisáceo */
+    font-size: 1.1rem; /* Ampliado */
+    margin-bottom: 40px;
+}
+
+/* --- Formulario (MÁS GRANDE Y ESPACIOSO) --- */
+.input-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 1rem; /* Letra más visible */
+    color: #1A3626;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 16px; /* Cajas de texto más altas */
+    border: 1px solid #D1D9D4;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1.1rem; /* Texto ingresado más grande */
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #40916C;
+    box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.2);
+}
+
+/* --- Botón (MÁS GRANDE Y LLAMATIVO) --- */
+.btn-ingresar {
+    width: 100%;
+    padding: 18px; /* Botón más grueso */
+    background-color: #2D6A4F; 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem; /* Texto más grande */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+.btn-ingresar:hover {
+    background-color: #1B4332; 
+}
+
+/* --- Enlaces de Abajo (MÁS GRANDES) --- */
+.enlaces-extra {
+    margin-top: 30px;
+    font-size: 1rem; 
+    color: #5C7A68;
+}
+
+.enlaces-extra a {
+    color: #2D6A4F;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.enlaces-extra a:hover {
+    text-decoration: underline;
+}
+
+.volver-inicio {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #888 !important;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Notificaciones Integradas --- */
+.notificacion {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden; /* Oculto por defecto */
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+/* Clases que controlará JavaScript */
+.notificacion.mostrar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.notificacion.exito {
+    background-color: #D8F3DC; /* Verde muy clarito */
+    color: #1B4332;
+    border: 1px solid #95D5B2;
+}
+
+.notificacion.error {
+    background-color: #F8D7DA; /* Rojo clarito */
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+}

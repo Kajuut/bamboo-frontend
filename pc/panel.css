@@ -1,0 +1,1039 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #F9F6F0; /* El fondo cremita de BAMBOO */
+    color: #333;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* --- Barra Lateral (Sidebar) --- */
+.sidebar {
+    width: 280px;
+    background-color: #1A3626; /* Verde oscuro elegante */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-title-sidebar {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    color: #E8F5E9;
+}
+
+.role-badge {
+    font-size: 0.8rem;
+    color: #95D5B2;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu {
+    flex-grow: 1;
+    padding: 20px 0;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px 25px;
+    color: #D1D9D4;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover, .menu-item.activo {
+    background-color: #2D6A4F;
+    color: white;
+    border-left: 5px solid #95D5B2;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+.user-name {
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    color: #E8F5E9;
+}
+
+.btn-logout {
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid #95D5B2;
+    color: #95D5B2;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-logout:hover {
+    background-color: #95D5B2;
+    color: #1A3626;
+}
+
+/* --- Área Principal --- */
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.top-header {
+    margin-bottom: 40px;
+}
+
+.top-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #1A3626;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.top-header p {
+    color: #5C7A68;
+}
+
+/* --- Tarjetas --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-left: 6px solid #2D6A4F;
+}
+
+.stat-card h3 {
+    font-size: 1rem;
+    color: #5C7A68;
+    margin-bottom: 15px;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1A3626;
+}
+
+/* --- Actividad --- */
+.activity-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-top: 20px;
+    color: #5C7A68;
+}
+
+/* --- Buscador Lateral --- */
+.sidebar-search {
+    padding: 0 20px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 10px;
+}
+
+.search-title {
+    font-size: 0.85rem;
+    color: #95D5B2;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background-color: rgba(255,255,255,0.05);
+    color: white;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.search-input:focus {
+    border-color: #95D5B2;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.search-input option {
+    background-color: #1A3626; /* Fondo verde oscuro para las opciones del select */
+    color: white;
+}
+
+.btn-buscar {
+    width: 100%;
+    padding: 10px;
+    background-color: #2D6A4F;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.btn-buscar:hover {
+    background-color: #95D5B2;
+    color: #1A3626;
+}
+
+/* --- Vista de Configuración --- */
+.config-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 20px;
+}
+
+.config-box .input-group {
+    margin-bottom: 15px;
+}
+
+.config-box label {
+    display: block;
+    font-size: 0.9rem;
+    color: #1A3626;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.config-box input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #D1D9D4;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.btn-guardar-precios {
+    padding: 12px 25px;
+    background-color: #2D6A4F;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn-guardar-precios:hover {
+    background-color: #1B4332;
+}
+
+.mensaje-config {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: none; /* Oculto por defecto */
+}
+
+/* --- Tabla de Reservaciones --- */
+.table-container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.bamboo-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.bamboo-table th {
+    background-color: #1A3626;
+    color: white;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.bamboo-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #E8F5E9;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.bamboo-table tr:hover {
+    background-color: #F9F6F0;
+}
+
+.btn-ver-detalle {
+    padding: 8px 15px;
+    background-color: #E8F5E9;
+    color: #2D6A4F;
+    border: 1px solid #95D5B2;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-ver-detalle:hover {
+    background-color: #2D6A4F;
+    color: white;
+}
+
+/* --- Etiquetas de Estado (Badges) --- */
+.badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.badge.en_carrito { background-color: #FFF3CD; color: #856404; }
+.badge.confirmada { background-color: #D4EDDA; color: #155724; }
+.badge.cancelada { background-color: #F8D7DA; color: #721C24; }
+
+/* --- Vista de Detalles Segmentada --- */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.folio-text {
+    font-family: monospace;
+    color: #95D5B2 !important;
+    background-color: #1A3626;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.btn-volver {
+    padding: 10px 20px;
+    background-color: white;
+    color: #1A3626;
+    border: 2px solid #1A3626;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-volver:hover {
+    background-color: #1A3626;
+    color: white;
+}
+
+.detalle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas de recuadros */
+    gap: 25px;
+}
+
+.detalle-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-top: 4px solid #2D6A4F;
+}
+
+.detalle-card h3 {
+    color: #1A3626;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.detalle-card hr {
+    border: none;
+    border-top: 1px solid #E8F5E9;
+    margin-bottom: 15px;
+}
+
+.detalle-card p {
+    margin-bottom: 10px;
+    color: #5C7A68;
+}
+
+.detalle-card p strong {
+    color: #333;
+}
+
+.finanzas-card {
+    border-top-color: #40916C;
+    text-align: center;
+}
+
+.total-precio {
+    font-size: 2.5rem;
+    color: #1A3626;
+    margin: 20px 0;
+}
+
+/* --- Nuevos Botones de Acción --- */
+.acciones-detalle {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-accion {
+    padding: 10px 15px;
+    background-color: white;
+    color: #1A3626;
+    border: 2px solid #1A3626;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-accion:hover {
+    background-color: #1A3626;
+    color: white;
+}
+
+.btn-dinero {
+    background-color: #E8F5E9;
+    border-color: #2D6A4F;
+    color: #2D6A4F;
+}
+
+.btn-dinero:hover {
+    background-color: #2D6A4F;
+    color: white !important;
+}
+
+/* --- Modales Emergentes --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: deslizarArriba 0.3s ease-out;
+}
+
+@keyframes deslizarArriba {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Clases para convertir texto en inputs durante el "Modo Edición" */
+.editable-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px dashed #95D5B2;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: #F9F6F0;
+}
+
+/* --- CONTENEDOR PRINCIPAL CALENDARIO (Fiel a unknown_2026.06.09-18.20.png) --- */
+.calendario-bamboo-card {
+    background-color: #FAF8F5; /* Fondo marfil/crema ultra suave de la imagen */
+    border-radius: 24px;
+    padding: 35px;
+    max-width: 550px;
+    margin: 20px auto;
+    font-family: 'Playfair Display', serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.cal-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cal-month-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #1A3626;
+    text-align: center;
+    margin: 0;
+}
+
+.cal-year-subtitle {
+    font-size: 0.95rem;
+    color: #8C8A85;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 4px;
+}
+
+.btn-nav-cal {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #1A3626;
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+.btn-nav-cal:hover { transform: scale(1.2); }
+
+.cal-btn-hoy-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.btn-cal-hoy {
+    background: transparent;
+    border: 1px solid #D4AF37; /* Borde dorado sutil */
+    color: #D4AF37;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+}
+.btn-cal-hoy:hover {
+    background-color: #D4AF37;
+    color: #ffffff;
+}
+
+/* DÍAS DE LA SEMANA */
+.cal-dias-semana-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #8C8A85;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #EAE6DF;
+    padding-bottom: 10px;
+}
+
+/* RECUADROS DE LOS DÍAS */
+.cal-grid-sistema {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr); /* Forzamos exactamente 6 filas simétricas siempre */
+    gap: 12px;
+    min-height: 330px; /* Bloqueamos el alto mínimo para que nunca se encoja ni crezca */
+}
+
+.dia-bamboo-celda {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dia-bamboo-celda span.label-estado {
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+/* 1. ESTADO DISPONIBLE (Crema claro de la imagen) */
+.dia-bamboo-celda.disponible {
+    background-color: #F4EFEA;
+    border: 1px solid transparent;
+    color: #2D312E;
+    cursor: pointer;
+}
+/* Efecto hover pedido: Un poco más grande y verde claro */
+.dia-bamboo-celda.disponible:hover {
+    transform: scale(1.06);
+    background-color: #D8F3DC; /* Verde claro premium */
+    color: #1B4332;
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.15);
+}
+
+/* 2. ESTADO OCUPADO (Verde oscuro de la imagen) */
+.dia-bamboo-celda.ocupado {
+    background-color: #233329; /* Color exacto pino oscuro */
+    color: #ffffff;
+}
+.dia-bamboo-celda.ocupado span.label-estado {
+    color: #A3B899;
+}
+
+/* 3. ESTADO VISITA (Verde medio sutil pedido) */
+.dia-bamboo-celda.visita {
+    background-color: #E2ECE9; /* Verde pálido/medio sutil */
+    color: #52796F;
+}
+.dia-bamboo-celda.visita span.label-estado {
+    color: #52796F;
+}
+
+/* ESTADO SELECCIONADO (Borde dorado con punto arriba a la derecha de la imagen) */
+.dia-bamboo-celda.seleccionado-bamboo {
+    border: 2px solid #C5A059 !important;
+    background-color: #F4EFEA !important;
+    color: #2D312E !important;
+}
+.dia-bamboo-celda.seleccionado-bamboo::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 5px;
+    height: 5px;
+    background-color: #C5A059;
+    border-radius: 50%;
+}
+
+/* REGLAS DE CURSORES PARA MODOS NO SELECCIONABLES */
+.dia-bamboo-celda.no-clickable {
+    cursor: default !important; /* Quita la mano de cliquear */
+}
+.dia-bamboo-celda.no-clickable:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Espacio en blanco del mes */
+.dia-bamboo-vacio {
+    background-color: transparent;
+    border: 1px dashed #EAE6DF; /* Cuadro punteado sutil para rellenar estéticamente */
+    border-radius: 12px;
+    aspect-ratio: 1;
+}
+
+/* LEYENDA INFERIOR DE LA IMAGEN */
+.cal-leyenda-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #EAE6DF;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6E6C68;
+    font-family: 'Montserrat', sans-serif;
+}
+.leyenda-item { display: flex; align-items: center; gap: 8px; }
+.leyenda-box { width: 14px; height: 14px; border-radius: 4px; }
+
+/* ESTADO PASADO (Días anteriores a la fecha actual del sistema) */
+.dia-bamboo-celda.pasado {
+    background-color: #F5F5F5 !important;
+    color: #C0C0C0 !important;
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+.dia-bamboo-celda.pasado span.label-estado {
+    color: #C0C0C0 !important;
+}
+.dia-bamboo-celda.pasado:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background-color: #F5F5F5 !important;
+}
+
+.ticket-cambio-card {
+    background-color: #FAF8F5;
+    border-left: 4px solid #C5A059; /* Distintivo dorado */
+    padding: 12px 18px;
+    border-radius: 4px 12px 12px 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+}
+
+.bamboo-filtros-container .input-group input, 
+.bamboo-filtros-container .input-group select {
+    border: 1px solid #EAE6DF;
+    border-radius: 8px;
+    background-color: #FAF8F5;
+    font-size: 0.9rem;
+    color: #2D312E;
+    transition: all 0.2s;
+}
+
+.bamboo-filtros-container .input-group input:focus, 
+.bamboo-filtros-container .input-group select:focus {
+    border-color: #2D6A4F;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+    outline: none;
+}
+
+/* --- RECONSTRUCCIÓN DE LA TABLA PREMIUM DE RESERVACIONES --- */
+.tabla-contenedor {
+    width: 100%;
+    margin-top: 25px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+    overflow-x: auto;
+}
+
+table.bamboo-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #2D312E;
+}
+
+/* Estilo para los encabezados */
+table.bamboo-tabla th {
+    font-family: 'Playfair Display', serif;
+    color: #1A3626;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 14px 18px;
+    border-bottom: 2px solid #EAE6DF;
+}
+
+/* Estilo para las filas y celdas */
+table.bamboo-tabla td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #FAF8F5;
+    vertical-align: middle;
+}
+
+/* Efecto hover suave al pasar el mouse por las filas */
+table.bamboo-tabla tbody tr:hover {
+    background-color: #FAF8F5;
+}
+
+/* Estilo del botón interno "Ver Detalle" */
+table.bamboo-tabla .btn-ver-detalle {
+    background-color: #FAF8F5;
+    border: 1px solid #2D6A4F;
+    color: #2D6A4F;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+table.bamboo-tabla .btn-ver-detalle:hover {
+    background-color: #2D6A4F;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(45, 106, 79, 0.15);
+}
+
+/* Corrección de padding para las medallas de estado (Badges) */
+table.bamboo-tabla .badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+/* --- ESTADO: EVENTO CONCLUIDO (Azul Cálido Premium) --- */
+.dia-bamboo-celda.concluido {
+    background-color: #E3ECF5 !important; /* Azul cálido suave */
+    color: #2B4C7E !important; /* Texto azul corporativo */
+    border: 1px solid #D0DFEE;
+    cursor: pointer !important; /* Mano interactiva activada */
+}
+
+.dia-bamboo-celda.concluido span.label-estado {
+    color: #5B7FA6 !important;
+    font-weight: 700;
+}
+
+/* Hover de crecimiento para celdas interactivas en el pasado */
+.dia-bamboo-celda.concluido:hover,
+.dia-bamboo-celda.ocupado.interactivo:hover,
+.dia-bamboo-celda.visita.interactivo:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Modificador dinámico para forzar la mano en el calendario maestro */
+.dia-bamboo-celda.interactivo {
+    cursor: pointer !important;
+}
+
+/* --- CENTRALIZACIÓN DEL CALENDARIO MAESTRO COMPACTO Y ESTABLE (ESCALA +50% CORREGIDA) --- */
+#vista-calendario {
+    height: calc(100vh - 40px);
+    width: 100%;
+    padding: 10px 20px; /* Reducimos el padding superior para dar más espacio de juego */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; /* Mantiene todo flotando perfectamente centrado en tu pantalla */
+    overflow: hidden; 
+}
+
+#vista-calendario .calendario-bamboo-card {
+    width: 700px !important;
+     /* Ajustado milimétricamente al ancho del grid + márgenes mínimos */
+    background-color: #FAF8F5;
+    border-radius: 24px;
+    padding: 20px 25px; /* Compactamos el acolchado interno para ganar píxeles */
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: auto !important; /* Rompe cualquier restricción previa para evitar desbordes */
+}
+
+/* CUADRÍCULA CONGELADA DE ALTA VISIBILIDAD (68px exactos) */
+#vista-calendario #calendarioGiganteGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 68px); 
+    grid-template-rows: repeat(6, 68px);    
+    gap: 8px; /* Reducimos el gap sutilmente de 10px a 8px para ahorrar altura total */
+    margin-top: 10px; /* Menos espacio muerto arriba del grid */
+    justify-content: center; 
+}
+
+/* Celdas perfectas y amplias */
+#vista-calendario .dia-bamboo-celda {
+    width: 68px !important;
+    height: 68px !important;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem; 
+    font-weight: 600;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+/* El cuadro vacío comparte la misma dimensión exacta */
+#vista-calendario .dia-bamboo-vacio {
+    width: 68px !important;
+    height: 68px !important;
+    box-sizing: border-box;
+}
+
+/* Indicadores de estado nítidos y estilizados abajo del número */
+#vista-calendario .dia-bamboo-celda span.label-estado {
+    font-size: 0.58rem; 
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 3px;
+    letter-spacing: 0.2px;
+}
+
+/* Proporciones de cabecera balanceadas y compactas */
+#vista-calendario .cal-month-title {
+    font-size: 2rem !important; /* Reducimos un milímetro el título para ganar altura */
+    margin: 0;
+}
+
+#vista-calendario .cal-year-subtitle {
+    font-size: 0.9rem !important;
+    margin-top: 2px;
+}
+
+/* Leyenda inferior compacta y perfectamente integrada al fondo de la tarjeta */
+#vista-calendario .cal-leyenda-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px; /* Espacio controlado con el grid */
+    padding-top: 12px;
+    border-top: 1px solid #EAE6DF;
+    font-size: 0.7rem;
+}
+
+/* ========================================================
+   ESTILOS PREMIUM DEL MÓDULO DE USUARIOS Y SWITCHES TOGGLE
+   ======================================================== */
+
+/* Tabla de usuarios */
+.bamboo-tabla-usuarios th, .bamboo-tabla-usuarios td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #F4F1EA;
+    font-size: 0.95rem;
+}
+.bamboo-tabla-usuarios tbody tr:hover {
+    background-color: #FAF8F5;
+}
+
+/* Botones ejecutivos de la tabla */
+.btn-operativo-user {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    border: 1px solid #EAE6DF;
+    transition: all 0.2s ease;
+    margin: 0 4px;
+}
+.btn-operativo-user.info { background-color: #FAF8F5; color: #52796F; }
+.btn-operativo-user.info:hover { background-color: #E2ECE9; border-color: #52796F; }
+.btn-operativo-user.permisos { background-color: #233329; color: #FAF8F5; border: none; }
+.btn-operativo-user.permisos:hover { background-color: #1A261F; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+/* Contenedor de Modales */
+.bamboo-modal-sistema {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(35, 51, 41, 0.4); /* Capa pino semi-transparente */
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000;
+}
+.modal-bamboo-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+}
+.btn-cerrar-modal-x {
+    background: none; border: none; font-size: 1.8rem; color: #8C8A85; cursor: pointer; line-height: 1;
+}
+.btn-cerrar-modal-x:hover { color: #233329; }
+
+/* Segmentos de Permisos organizados */
+.segmento-permisos-bloque {
+    background-color: #FAF8F5;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #EAE6DF;
+}
+.segmento-titulo-header {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #233329;
+    border-bottom: 1px dashed #EAE6DF;
+    padding-bottom: 6px;
+    font-weight: 700;
+}
+
+/* Fila individual de capacidad */
+.permiso-fila-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+.permiso-texto-lbl {
+    font-size: 0.9rem;
+    color: #4A4A4A;
+    font-weight: 600;
+}
+
+/* --- ANIMACIÓN ESTELAR DEL SWITCH DESLIZABLE (TOGGLE) --- */
+.bamboo-switch-toggle {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+.bamboo-switch-toggle input {
+    opacity: 0; width: 0; height: 0;
+}
+.slider-deslizable-track {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #EAE6DF;
+    transition: .3s ease;
+    border-radius: 24px;
+}
+.slider-deslizable-track:before {
+    position: absolute; content: "";
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+/* Estado Encendido (Pino Oscuro) */
+.bamboo-switch-toggle input:checked + .slider-deslizable-track {
+    background-color: #233329;
+}
+/* Movimiento fluido lateral del círculo */
+.bamboo-switch-toggle input:checked + .slider-deslizable-track:before {
+    transform: translateX(22px);
+}
