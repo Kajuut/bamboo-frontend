@@ -600,6 +600,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const fecha = reserva.fecha_evento ? new Date(reserva.fecha_evento).toLocaleDateString('es-MX', { timeZone: 'UTC' }) : 'Sin fecha';
 
             document.getElementById('detalleFolio').textContent = `Folio: ${reserva._id.substring(0, 8).toUpperCase()}`;
+            if (document.getElementById('detCreadoPor')) {
+    document.getElementById('detCreadoPor').textContent = reserva.creado_por || 'Cliente Web / Manual';
+}
             document.getElementById('detNombre').textContent = reserva.nombre_cliente || 'Cliente sin registrar';
             document.getElementById('detCorreo').textContent = reserva.correo || 'No proporcionado';
             document.getElementById('detTelefono').textContent = reserva.telefono || 'No proporcionado';
@@ -759,7 +762,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         convertirTextoAInput('detNombre', 'text');
                         convertirTextoAInput('detCorreo', 'email');
                         convertirTextoAInput('detTelefono', 'text');
-                        convertirTextoAInput('detHorasExtra', 'number');
+                        const elHorasExtra = document.getElementById('detHorasExtra');
+if (elHorasExtra) {
+    const hrsActuales = parseInt(elHorasExtra.textContent) || 0;
+    elHorasExtra.innerHTML = `
+        <select id="input_detHorasExtra" class="editable-input">
+            <option value="0" ${hrsActuales === 0 ? 'selected' : ''}>0 horas</option>
+            <option value="1" ${hrsActuales === 1 ? 'selected' : ''}>1 hora extra</option>
+            <option value="2" ${hrsActuales === 2 ? 'selected' : ''}>2 horas extras</option>
+            <option value="3" ${hrsActuales === 3 ? 'selected' : ''}>3 horas extras</option>
+        </select>`;
+}
                         convertirTextoAInput('detSillas', 'number');
                         convertirTextoAInput('detMesas', 'number');
 
@@ -834,7 +847,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             mesas_adicionales: parseInt(document.getElementById('input_detMesas').value) || 0,
                             solicitudes_adicionales: txtAreaNotas ? txtAreaNotas.value.trim() : '', 
                             total_calculado: totalFinalCalculado,
-                            motivo_modificacion: motivoRedactado
+                            motivo_modificacion: motivoRedactado,
+                            usuario_accion: usuarioLogueado.nombre
                         };
 
                         try {
@@ -1299,7 +1313,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 anticipo_pagado: anticipoInput,
                 total_calculado: totalFinal,
                 estado: estadoInicial,
-                solicitudes_adicionales: inputNotasHTML ? inputNotasHTML.value.trim() : ""
+                solicitudes_adicionales: inputNotasHTML ? inputNotasHTML.value.trim() : "",
+                creado_por: usuarioLogueado.nombre
             };
 
             await ejecutarPeticionGuardadoGlobal(payload, "Reservación agendada con éxito!");

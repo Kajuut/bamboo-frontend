@@ -236,13 +236,14 @@
     </header>
     
     <div class="detalle-grid">
-        <div class="detalle-card">
-            <h3>👤 Datos del Cliente</h3>
-            <hr>
-            <p><strong>Nombre:</strong> <span id="detNombre"></span></p>
-            <p><strong>Correo:</strong> <span id="detCorreo"></span></p>
-            <p><strong>Teléfono:</strong> <span id="detTelefono"></span></p>
-        </div>
+       <div class="detalle-card">
+    <h3>👤 Datos del Cliente</h3>
+    <hr>
+    <p><strong>Nombre:</strong> <span id="detNombre"></span></p>
+    <p><strong>Correo:</strong> <span id="detCorreo"></span></p>
+    <p><strong>Teléfono:</strong> <span id="detTelefono"></span></p>
+    <p style="color: #2D6A4F;"><strong>Registrado por:</strong> <span id="detCreadoPor" style="font-weight: 700;"></span></p>
+</div>
 
         <div class="detalle-card">
             <h3>📅 Detalles del Evento</h3>
@@ -401,9 +402,14 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Horas Extra (Máximo 3)</label>
-                    <input type="number" id="nuevasHoras" class="editable-input" value="0" min="0" max="3" onkeydown="return false;">
-                </div>
+    <label>Horas Extra (Máximo 3)</label>
+    <select id="nuevasHoras" class="editable-input">
+        <option value="0">0 horas adicionales</option>
+        <option value="1">1 hora extra</option>
+        <option value="2">2 horas extras</option>
+        <option value="3">3 horas extras</option>
+    </select>
+</div>
                 <div class="input-group">
                     <label>Sillas Extra</label>
                     <input type="number" id="nuevasSillas" class="editable-input" value="0" min="0">
