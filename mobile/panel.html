@@ -91,7 +91,7 @@
         /* --- ENVOLTORIO GENERAL DE CONTENIDO --- */
         .mobile-main-container {
             width: 100%;
-            max-width: 480px; /* Acoplado a dimensiones smartphone estándar */
+            max-width: 480px; 
             margin: 0 auto;
             padding: 16px;
         }
@@ -182,7 +182,7 @@
 
         .editable-input, .config-box input, .search-input {
             width: 100% !important;
-            height: 48px; /* Altura ergonómica móvil */
+            height: 48px; 
             padding: 12px;
             border: 1px solid var(--bamboo-border);
             border-radius: 8px;
@@ -293,7 +293,7 @@
         }
 
         .bamboo-tabla thead, .bamboo-tabla-usuarios thead {
-            display: none !important; /* Ocultamos cabeceras rígidas */
+            display: none !important; 
         }
 
         .bamboo-tabla tbody, .bamboo-tabla-usuarios tbody {
@@ -329,7 +329,6 @@
             text-align: left !important;
         }
 
-        /* Fila de botones internos de las nuevas tarjetas */
         .bamboo-tabla td:last-child, .bamboo-tabla-usuarios td:last-child {
             border-top: 1px dashed var(--bamboo-border) !important;
             padding-top: 10px !important;
@@ -498,12 +497,11 @@
         .menu-item-icon { font-size: 1.25rem; }
         .menu-item.activo { color: var(--bamboo-pino-light); }
 
-        /* --- CAPAS DE MODALES CORREGIDAS (OCULTAS AL ARRANQUE) --- */
         .modal-overlay, .bamboo-modal-sistema, .modal-bamboo-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: rgba(15, 36, 23, 0.4);
-            display: none; /* Forzado a none para evitar solapamientos */
+            display: none; 
             justify-content: center;
             align-items: center;
             z-index: 2000;
@@ -545,6 +543,7 @@
 
     <main class="mobile-main-container">
 
+        <!-- 🏠 VISTA 1: INICIO -->
         <div id="vista-inicio" class="mobile-view-pane" style="display: block;">
             <header class="top-header">
                 <h1>Visión General</h1>
@@ -573,6 +572,7 @@
             </section>
         </div>
 
+        <!-- 🏷️ VISTA 2: TARIFAS -->
         <div id="vista-precios" class="mobile-view-pane" style="display: none;">
             <header class="top-header">
                 <h1>Precios y Tarifas</h1>
@@ -598,6 +598,7 @@
             </div>
         </div>
 
+        <!-- 📋 VISTA 3: RESERVACIONES -->
         <div id="vista-reservaciones" class="mobile-view-pane" style="display: none;">
             <header class="top-header">
                 <h1>Reservaciones</h1>
@@ -633,6 +634,7 @@
             </div>
         </div>
 
+        <!-- 🔍 VISTA 4: EXPEDIENTE (DETALLES) -->
         <div id="vista-detalle-reserva" class="mobile-view-pane" style="display: none;">
             <header class="top-header">
                 <h1>Detalle del Evento</h1>
@@ -649,7 +651,9 @@
                     <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">👤 Datos del Cliente</h3>
                     <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Nombre:</strong> <span id="detNombre"></span></p>
                     <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Correo:</strong> <span id="detCorreo"></span></p>
-                    <p style="font-size:0.85rem;"><strong>Teléfono:</strong> <span id="detTelefono"></span></p>
+                    <p style="font-size:0.85rem; margin-bottom:4px;"><strong>Teléfono:</strong> <span id="detTelefono"></span></p>
+                    <!-- ✨ NUEVO CAMPO SOLICITADO: CREADOR DE LA RESERVA -->
+                    <p style="font-size:0.85rem; color: var(--bamboo-pino-light);"><strong>Registrado por:</strong> <span id="detCreadoPor" style="font-weight:700;"></span></p>
                 </div>
                 <div class="bamboo-mobile-card">
                     <h3 style="color: var(--bamboo-pino); font-size: 0.95rem; margin-bottom: 8px;">📅 Estatus del Evento</h3>
@@ -680,12 +684,13 @@
             </div>
 
             <div class="bamboo-mobile-card" style="margin-top: 10px;">
-                <h3 style="font-family: 'Playfair Display', serif; color: var(--bamboo-pino); margin-bottom: 10px; font-size: 1.1rem;">📜 Auditoría de Cambios</h3>
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--bamboo-pino); margin-bottom: 10px; font-size: 1.1rem;">📜 Historial de Cambios</h3>
                 <div id="contenedorListaHistorial" style="display: flex; flex-direction: column; gap: 8px;"></div>
             </div>
             <button id="btnVolverReservas" class="btn-volver" style="margin-bottom: 16px;">← Volver al Listado</button>
         </div>
 
+        <!-- ➕ VISTA 5: CREADOR (CON FIX DE HORAS SELECT MÓVIL) -->
         <div id="vista-crear" class="mobile-view-pane" style="display: none;">
             <header class="top-header">
                 <h1>Centro de Agendación</h1>
@@ -756,7 +761,18 @@
                             <option value="Paquete 4 (100 personas)">Paquete 4 (100 p.)</option>
                         </select>
                     </div>
-                    <div class="input-group"><label>Horas Extra (Max 3)</label><input type="number" id="nuevasHoras" value="0" min="0" max="3" onkeydown="return false;"></div>
+                    
+                    <!-- 🛠️ SOLUCIÓN MÓVIL AL BUG 1: Convertido de input number a select nativo -->
+                    <div class="input-group">
+                        <label>Horas Extra (Máximo 3)</label>
+                        <select id="nuevasHoras" class="editable-input">
+                            <option value="0">0 horas adicionales</option>
+                            <option value="1">1 hora extra</option>
+                            <option value="2">2 horas extras</option>
+                            <option value="3">3 horas extras</option>
+                        </select>
+                    </div>
+                    
                     <div class="input-group"><label>Sillas Extra</label><input type="number" id="nuevasSillas" value="0" min="0"></div>
                     <div class="input-group"><label>Mesas Extra</label><input type="number" id="nuevasMesas" value="0" min="0"></div>
                     <div class="input-group"><label>Abonar Anticipo ($)</label><input type="number" id="nuevoAnticipo" value="0" min="0" placeholder="Ej. 2000"></div>
@@ -767,6 +783,7 @@
             </div>
         </div>
 
+        <!-- 📆 VISTA 6: CALENDARIO MAESTRO -->
         <div id="vista-calendario" class="mobile-view-pane" style="display: none;">
             <header class="top-header">
                 <h1>Calendario Maestro</h1>
@@ -782,14 +799,15 @@
                 <div class="cal-dias-semana-grid"><div>DO</div><div>LU</div><div>MA</div><div>MI</div><div>JU</div><div>VI</div><div>SA</div></div>
                 <div id="calendarioGiganteGrid" class="cal-grid-sistema"></div>
                 <div class="cal-leyenda-footer">
-                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #FAF8F5; border:1px solid var(--bamboo-border);"></div> Libre</div>
-                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: var(--bamboo-pino);"></div> Ocupado</div>
-                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E2ECE9;"></div> Visita</div>
-                    <div class="leyenda-item"><div class="leyenda-box" style="background-color: #E3ECF5;"></div> Finalizada</div>
+                    <div class="leyenda-item"><div class="leyenda-box color-lib"></div> Lib</div>
+                    <div class="leyenda-item"><div class="leyenda-box color-ocu"></div> Ocu</div>
+                    <div class="leyenda-item"><div class="leyenda-box color-vis"></div> Vis</div>
+                    <div class="leyenda-item"><div class="leyenda-box color-con"></div> Fin</div>
                 </div>
             </div>
         </div>
 
+        <!-- 👥 VISTA 7: STAFF -->
         <div id="vista-usuarios" class="mobile-view-pane" style="display: none;">
             <header class="top-header">
                 <h1>Staff y Personal</h1>
@@ -820,28 +838,28 @@
 
             <div id="modalInfoUsuario" class="bamboo-modal-sistema" style="display: none;">
                 <div class="modal-bamboo-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--bamboo-border); padding-bottom:6px;">
-                        <h3 style="color:var(--bamboo-pino); font-size:1.1rem;">📋 Expediente Personal</h3>
+                    <div class="modal-top-header-bamboo">
+                        <h3>📋 Expediente Personal</h3>
                         <button class="btn-cerrar-modal-x" onclick="cerrarModalUsuarios('modalInfoUsuario')">×</button>
                     </div>
-                    <div id="contenedorInfoPersonal" style="display:flex; flex-direction:column; gap:10px;"></div>
+                    <div id="contenedorInfoPersonal" class="modal-flex-stack-info"></div>
                 </div>
             </div>
 
             <div id="modalPermisosUsuario" class="bamboo-modal-sistema" style="display: none;">
-                <div class="modal-bamboo-card" style="max-height:85vh; overflow-y:auto;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--bamboo-border); padding-bottom:6px;">
+                <div class="modal-bamboo-card scrollable-modal-body">
+                    <div class="modal-top-header-bamboo">
                         <div>
-                            <h3 style="color:var(--bamboo-pino); font-size:1.1rem;">⚙️ Llaves de Acceso</h3>
-                            <p id="subtituloPermisosNombre" style="font-size:0.75rem; color:var(--bamboo-muted); font-weight:700;"></p>
+                            <h3>⚙️ Llaves de Acceso</h3>
+                            <p id="subtituloPermisosNombre"></p>
                         </div>
                         <button class="btn-cerrar-modal-x" onclick="cerrarModalUsuarios('modalPermisosUsuario')">×</button>
                     </div>
                     <form id="formMatrizPermisos" class="config-grid">
                         <div id="segmentosPermisosContenedor"></div>
-                        <div style="display:flex; gap:10px; border-top:1px solid var(--bamboo-border); padding-top:12px; margin-top:8px;">
-                            <button type="button" class="btn-volver" onclick="cerrarModalUsuarios('modalPermisosUsuario')" style="margin:0 !important; width:50%;">Cerrar</button>
-                            <button type="submit" class="btn-accion" style="margin:0 !important; width:50%; background-color:var(--bamboo-pino);">Guardar</button>
+                        <div class="modal-footer-buttons-row">
+                            <button type="button" class="btn-volver margin-zero" onclick="cerrarModalUsuarios('modalPermisosUsuario')">Cerrar</button>
+                            <button type="submit" class="btn-accion margin-zero style-dark-pino">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -854,40 +872,40 @@
         <button id="btnMenuInicio" class="menu-item activo"><span class="menu-item-icon">🏠</span><span>Inicio</span></button>
         <button id="btnMenuReservas" class="menu-item"><span class="menu-item-icon">📋</span><span>Reservas</span></button>
         <button id="btnMenuCrear" class="menu-item"><span class="menu-item-icon">➕</span><span>Crear</span></button>
-        <button id="btnMenuCalendario" class="menu-item"><span class="menu-item-icon">📆</span><span>Calendario</span></button>
+        <button id="btnMenuCalendario" class="menu-item"><span class="menu-item-icon">📆</span><span>Maestro</span></button>
         <button id="btnMenuUsuarios" class="menu-item"><span class="menu-item-icon">👥</span><span>Staff</span></button>
         <button id="btnMenuPrecios" class="menu-item"><span class="menu-item-icon">⚙️</span><span>Tarifas</span></button>
     </div>
 
     <div id="modalAnticipo" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="color:var(--bamboo-pino); margin-bottom:6px;">Registrar Abono</h3>
-            <p id="textoDeuda" style="font-size:0.85rem; color:var(--bamboo-muted); margin-bottom:12px;"></p>
+            <h3>Registrar Abono</h3>
+            <p id="textoDeuda" class="texto-deuda-estilo"></p>
             <input type="number" id="inputMontoAnticipo" placeholder="Cantidad ($)" class="search-input" style="border-color:var(--bamboo-pino);">
-            <p id="errorAnticipo" style="color:red; font-size:0.75rem; font-weight:700; margin-top:6px; display:none;"></p>
-            <div style="display:flex; gap:10px; margin-top:14px;">
-                <button id="btnCerrarModal" class="btn-volver" style="margin:0 !important; width:50%;">Atrás</button>
-                <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero" style="margin:0 !important; width:50%;">Abonar</button>
+            <p id="errorAnticipo" class="error-msg-bamboo"></p>
+            <div class="modal-buttons-split-row">
+                <button id="btnCerrarModal" class="btn-volver margin-zero">Atrás</button>
+                <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero margin-zero">Abonar</button>
             </div>
         </div>
     </div>
 
     <div id="modalConfirmacion" class="modal-overlay">
-        <div class="modal-content" style="text-align: center;">
-            <h3 style="color:var(--bamboo-pino); margin-bottom:8px;">¿Proceder con la acción?</h3>
-            <p id="textoConfirmacion" style="font-size:0.85rem; color:var(--bamboo-muted); margin-bottom:16px;"></p>
-            <div style="display:flex; gap:10px;">
-                <button id="btnCancelarConfirmacion" class="btn-volver" style="margin:0 !important; width:50%;">No</button>
-                <button id="btnAceptarConfirmacion" class="btn-accion" style="margin:0 !important; width:50%;">Sí</button>
+        <div class="modal-content text-center">
+            <h3>¿Proceder con la acción?</h3>
+            <p id="textoConfirmacion" class="texto-modal-desc"></p>
+            <div class="modal-buttons-split-row">
+                <button id="btnCancelarConfirmacion" class="btn-volver margin-zero">No</button>
+                <button id="btnAceptarConfirmacion" class="btn-accion margin-zero">Sí</button>
             </div>
         </div>
     </div>
 
     <div id="modalAlerta" class="modal-overlay">
-        <div class="modal-content" style="text-align: center;">
-            <h3 style="color:var(--bamboo-pino); margin-bottom:8px;">Aviso Operativo</h3>
-            <p id="textoAlerta" style="font-size:0.85rem; color:var(--bamboo-muted); margin-bottom:16px;"></p>
-            <button id="btnAceptarAlerta" class="btn-accion" style="margin:0 !important;">Entendido</button>
+        <div class="modal-content text-center">
+            <h3>Aviso Operativo</h3>
+            <p id="textoAlerta" class="texto-modal-desc"></p>
+            <button id="btnAceptarAlerta" class="btn-accion margin-zero">Entendido</button>
         </div>
     </div>
 
