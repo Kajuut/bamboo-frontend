@@ -622,6 +622,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 elementoNotas.textContent = reserva.solicitudes_adicionales || 'Sin especificaciones o notas extras.';
             }
 
+            // ✨ INTERCEPCIÓN QUIRÚRGICA: CAMBIO C
+            const btnDescargar = document.getElementById('btnDescargarRecibo');
+            const btnPurgar = document.getElementById('btnPurgarRecibo');
+
+            if (btnDescargar && btnPurgar) {
+                // Si la reserva tiene un PDF activo en el servidor, mostramos los controles
+                if (reserva.recibo_url && reserva.recibo_url !== '') {
+                    btnDescargar.style.display = 'inline-block';
+                    btnPurgar.style.display = 'inline-block';
+                    
+                    btnDescargar.onclick = (e) => { e.preventDefault(); window.open(reserva.recibo_url, '_blank'); };
+                    
+                    btnPurgar.onclick = async (e) => {
+                        e.preventDefault();
+                        const confirmaPurga = await mostrarConfirmacion("¿Deseas purgar permanentemente el archivo PDF de este recibo? Esta acción se registrará en la bitácora.");
+                        if (!confirmaPurga) return;
+
+                        try {
+                            const resPurga = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}/recibo`, {
+                                method: 'DELETE',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                                body: JSON.stringify({ usuario_accion: usuarioLogueado.nombre })
+                            });
+                            if (resPurga.ok) {
+                                mostrarAlerta("El archivo físico del recibo ha sido eliminado del servidor.");
+                                await cargarReservaciones();
+                                window.verDetalle(idReservaSeleccionada);
+                            }
+                        } catch(err) { console.error(err); }
+                    };
+                } else {
+                    btnDescargar.style.display = 'none';
+                    btnPurgar.style.display = 'none';
+                }
+            }
+
             const totalPagar = reserva.total_calculado || 0;
             const pagado = reserva.anticipo_pagado || 0;
             const pendiente = totalPagar - pagado;
@@ -714,9 +750,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     try {
                         const respuesta = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}/anticipo`, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                            body: JSON.stringify({ monto_adicional: montoAAbonar }) 
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    // Sincronizado con los requerimientos de tu nuevo controlador del backend
+    body: JSON.stringify({ 
+        monto_adicional: montoAAbonar,
+        tipo_cobro: document.getElementById('inputTipoCobroAnticipo').value,
+        usuario_accion: usuarioLogueado.nombre
+    })
                         });
 
                         const datosRespuesta = await respuesta.json();
@@ -827,51 +868,56 @@ if (elHorasExtra) {
                         if (inHorasEx) inHorasEx.addEventListener('input', sincronizarHoraSalidaEdicion);
 
                     } else {
-                        const motivoRedactado = await solicitarMotivoChangeSistema();
-                        if (motivoRedactado === null) return;
+    // Desplegamos la consulta de acción al operador
+    const quiereRegenerar = await mostrarConfirmacion("¿Deseas guardar los cambios y REGENERAR el recibo PDF con los nuevos parámetros monetarios?");
+    
+    const motivoRedactado = await solicitarMotivoChangeSistema();
+    if (motivoRedactado === null) return;
 
-                        const totalFinalCalculado = await recalcularPrecioEdicionEnVivo();
-                        const txtAreaNotas = document.getElementById('input_detNotas');
+    const totalFinalCalculado = await recalcularPrecioEdicionEnVivo();
+    const txtAreaNotas = document.getElementById('input_detNotas') || document.getElementById('input_detSolicitudes');
 
-                        const payloadActualizado = {
-                            nombre_cliente: document.getElementById('input_detNombre').value,
-                            correo: document.getElementById('input_detCorreo').value,
-                            telefono: document.getElementById('input_detTelefono').value,
-                            fecha_evento: document.getElementById('input_detFecha').value,
-                            hora_inicio: document.getElementById('input_detHoraInicio').value,
-                            hora_fin: document.getElementById('input_detHoraFin').value,
-                            estado: document.getElementById('input_detEstado').value,
-                            paquete: document.getElementById('input_detPaquete').value,
-                            horas_extras: parseInt(document.getElementById('input_detHorasExtra').value) || 0,
-                            sillas_adicionales: parseInt(document.getElementById('input_detSillas').value) || 0,
-                            mesas_adicionales: parseInt(document.getElementById('input_detMesas').value) || 0,
-                            solicitudes_adicionales: txtAreaNotas ? txtAreaNotas.value.trim() : '', 
-                            total_calculado: totalFinalCalculado,
-                            motivo_modificacion: motivoRedactado,
-                            usuario_accion: usuarioLogueado.nombre
-                        };
+    const payloadActualizado = {
+        nombre_cliente: document.getElementById('input_detNombre').value,
+        correo: document.getElementById('input_detCorreo').value,
+        telefono: document.getElementById('input_detTelefono').value,
+        fecha_evento: document.getElementById('input_detFecha').value,
+        hora_inicio: document.getElementById('input_detHoraInicio').value,
+        hora_fin: document.getElementById('input_detHoraFin').value,
+        estado: document.getElementById('input_detEstado').value,
+        paquete: document.getElementById('input_detPaquete').value,
+        horas_extras: parseInt(document.getElementById('input_detHorasExtra').value) || 0,
+        sillas_adicionales: parseInt(document.getElementById('input_detSillas').value) || 0,
+        mesas_adicionales: parseInt(document.getElementById('input_detMesas').value) || 0,
+        solicitudes_adicionales: txtAreaNotas ? txtAreaNotas.value.trim() : '', 
+        total_calculado: totalFinalCalculado,
+        motivo_modificacion: motivoRedactado,
+        usuario_accion: usuarioLogueado.nombre,
+        // 🚩 PALANCA CRÍTICA DEL BACKEND: Determina si se destruye el PDF viejo y se compila uno nuevo
+        regenerar_recibo: quiereRegenerar 
+    };
 
-                        try {
-                            const respuesta = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                                body: JSON.stringify(payloadActualizado)
-                            });
+    try {
+        const respuesta = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify(payloadActualizado)
+        });
 
-                            if (respuesta.ok) {
-                                mostrarAlerta("¡Reservación recalculada, guardada y registrada en la bitácora de auditoría!");
-                                modoEdicionActivo = false;
-                                nuevoBtnModificar.textContent = "✏️ Modificar";
-                                
-                                await cargarReservaciones();
-                                window.verDetalle(idReservaSeleccionada);
-                            } else {
-                                mostrarAlerta("Error al intentar actualizar la reservación.");
-                            }
-                        } catch (error) {
-                            mostrarAlerta("Error de comunicación con el servidor.");
-                        }
-                    }
+        if (respuesta.ok) {
+            mostrarAlerta(quiereRegenerar ? "¡Reservación y recibo digital actualizados con éxito!" : "¡Modificaciones guardadas en la bitácora de auditoría!");
+            modoEdicionActivo = false;
+            nuevoBtnModificar.textContent = "✏️ Modificar";
+            
+            await cargarReservaciones();
+            window.verDetalle(idReservaSeleccionada);
+        } else {
+            mostrarAlerta("Error al intentar actualizar la reservación.");
+        }
+    } catch (error) {
+        mostrarAlerta("Error de comunicación con el servidor.");
+    }
+}
                 });
             }
 
@@ -1274,6 +1320,18 @@ if (elHorasExtra) {
         }
     });
 
+    // ✨ INTERCEPCIÓN QUIRÚRGICA: CAMBIO A
+    const inputAnticipoCrear = document.getElementById('nuevoAnticipo');
+    if (inputAnticipoCrear) {
+        inputAnticipoCrear.addEventListener('input', () => {
+            const monto = parseFloat(inputAnticipoCrear.value) || 0;
+            const grupoCobro = document.getElementById('grupoTipoCobro');
+            if (grupoCobro) {
+                grupoCobro.style.display = (monto > 0) ? 'block' : 'none';
+            }
+        });
+    }
+
     // --- ACCIÓN: GUARDAR RESERVACIÓN (PASO 3 MODAL RESERVA) ---
     const btnGuardarNuevaReservaReal = document.getElementById('btnGuardarNuevaReserva');
     if(btnGuardarNuevaReservaReal) {
@@ -1313,6 +1371,7 @@ if (elHorasExtra) {
                 anticipo_pagado: anticipoInput,
                 total_calculado: totalFinal,
                 estado: estadoInicial,
+                tipo_cobro: (anticipoInput > 0) ? document.getElementById('nuevoTipoCobro').value : 'ninguno',
                 solicitudes_adicionales: inputNotasHTML ? inputNotasHTML.value.trim() : "",
                 creado_por: usuarioLogueado.nombre
             };

@@ -228,11 +228,16 @@
             <p id="detalleFolio" class="folio-text">Cargando...</p>
         </div>
         <div class="acciones-detalle">
-            <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
-            <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
-            <button id="btnEliminarReserva" class="btn-accion" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar Reserva</button>
-            <button id="btnVolverReservas" class="btn-volver">← Volver</button>
-        </div>
+    <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
+    <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
+    
+    <!-- ✨ NUEVOS BOTONES DE CONTROL DE ARCHIVOS DIGITALES -->
+    <button id="btnDescargarRecibo" class="btn-accion" style="background-color: #1A3626; color: white; display: none;">📥 Descargar Recibo</button>
+    <button id="btnPurgarRecibo" class="btn-volver" style="border-color: #D4AF37; color: #D4AF37; display: none;">🗑️ Eliminar Recibo</button>
+    
+    <button id="btnEliminarReserva" class="btn-accion" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar Reserva</button>
+    <button id="btnVolverReservas" class="btn-volver">← Volver</button>
+</div>
     </header>
     
     <div class="detalle-grid">
@@ -419,9 +424,18 @@
                     <input type="number" id="nuevasMesas" class="editable-input" value="0" min="0">
                 </div>
                 <div class="input-group">
-                    <label>Anticipo Pagado ($)</label>
+                  <label>Anticipo Pagado ($)</label>
                     <input type="number" id="nuevoAnticipo" class="editable-input" value="0" min="0" placeholder="Ej. 2000">
                 </div>
+                <!-- ✨ NUEVO SELECTOR DE COBRO AUTOMÁTICO -->
+              <div class="input-group" id="grupoTipoCobro" style="display: none;">
+                <label>💳 Método de Cobro del Anticipo</label>
+               <select id="nuevoTipoCobro" class="editable-input">
+        <option value="efectivo">Efectivo</option>
+        <option value="cheque">Cheque</option>
+        <option value="transferencia">Transferencia</option>
+                 </select>
+               </div>
                 <div class="input-group" style="grid-column: span 2;">
                     <label>Solicitudes Adicionales / Notas Extra</label>
                     <textarea id="nuevasSolicitudes" class="editable-input" rows="3" placeholder="Ej. Requerimos que el montaje inicie desde temprano..." style="width: 100%; height: auto; padding: 10px;"></textarea>
@@ -557,18 +571,35 @@
 </div>
 
             <!-- MODAL: ABONAR ANTICIPO -->
-            <div id="modalAnticipo" class="modal-overlay">
-                <div class="modal-content">
-                    <h3>Registrar Pago / Anticipo</h3>
-                    <p id="textoDeuda" style="margin-bottom: 15px; color: #5C7A68;"></p>
-                    <input type="number" id="inputMontoAnticipo" placeholder="Cantidad a abonar ($)" class="search-input" style="border: 1px solid #1A3626; color: #333;">
-                    <p id="errorAnticipo" style="color: red; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
-                    <div style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button id="btnCerrarModal" class="btn-volver">Cancelar</button>
-                        <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero">Confirmar Pago</button>
-                    </div>
-                </div>
-            </div>
+          <!-- MODAL: ABONAR ANTICIPO CON SELECTOR DE COBRO -->
+<div id="modalAnticipo" class="modal-overlay">
+    <div class="modal-content">
+        <h3 style="color: #1A3626; margin-bottom: 5px;">Registrar Pago / Anticipo</h3>
+        <p id="textoDeuda" style="margin-bottom: 15px; color: #5C7A68; font-size: 0.85rem; line-height: 1.4;"></p>
+        
+        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+            <label style="font-size: 0.75rem; font-weight: bold; color: #2D6A4F; text-transform: uppercase; display: block; margin-bottom: 5px;">Cantidad a abonar ($):</label>
+            <input type="number" id="inputMontoAnticipo" placeholder="Ej. 1500" class="search-input" style="border: 1px solid #1A3626; color: #333; width: 100%; height: 40px; padding: 10px; border-radius: 6px;">
+        </div>
+
+        <!-- ✨ NUEVO SELECTOR DE COMPROBACIÓN MONETARIA DE ABONOS -->
+        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+            <label style="font-size: 0.75rem; font-weight: bold; color: #2D6A4F; text-transform: uppercase; display: block; margin-bottom: 5px;">💳 Forma de Pago del Abono:</label>
+            <select id="inputTipoCobroAnticipo" class="search-input" style="border: 1px solid #1A3626; width: 100%; height: 40px; padding: 5px; color: #333; background: #FAF8F5; border-radius: 6px;">
+                <option value="efectivo">Efectivo</option>
+                <option value="cheque">Cheque</option>
+                <option value="transferencia">Transferencia</option>
+            </select>
+        </div>
+
+        <p id="errorAnticipo" style="color: red; font-size: 0.85rem; margin-top: 10px; display: none;"></p>
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button id="btnCerrarModal" class="btn-volver" style="width: 50%; margin: 0;">Cancelar</button>
+            <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero" style="width: 50%; margin: 0;">Confirmar Pago</button>
+        </div>
+    </div>
+</div>
 
             <!-- ========================================== -->
             <!-- MODALES DE SISTEMA (Reemplazan a los antiguos alert y confirm) -->
