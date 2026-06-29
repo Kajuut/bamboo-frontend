@@ -33,74 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ejecutamos la solicitud visual en el instante en que el operario inicia su jornada
     inicializarPermisosNotificacionesMovi();
 
-   // ========================================================
-    // 🧪 BOTÓN FLOTANTE OPERATIVO PARA TEST DE ALERTAS
-    // ========================================================
-    function inyectarBotonPruebaNotificacion() {
-        // 1. Creamos un botón físico real y llamativo desde el código
-        const btnTest = document.createElement('button');
-        btnTest.textContent = "🧪 PROBAR ALERTA EN VIVO";
-        
-        // Estilos elegantes para que flote arriba del contenido móvil sin estorbar
-        btnTest.style.cssText = `
-            position: fixed;
-            top: 85px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 99999;
-            background-color: var(--bamboo-dorado, #C5A059);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        `;
-
-        // Lo inyectamos directamente en el cuerpo de la página
-        document.body.appendChild(btnTest);
-
-        // 2. Programamos el momento exacto del envío al hacerle clic
-        btnTest.addEventListener('click', async () => {
-            try {
-                if (!('serviceWorker' in navigator)) {
-                    alert("❌ Tu navegador móvil no soporta Service Workers.");
-                    return;
-                }
-
-                // Registramos el archivo de soporte técnico obligatorio
-                const registro = await navigator.serviceWorker.register('sw.js');
-                
-                // Forzamos la solicitud de aduana si estuviera en modo espera
-                if (Notification.permission === 'default') {
-                    await Notification.requestPermission();
-                }
-
-                if (Notification.permission !== 'granted') {
-                    alert(`⚠️ Permiso denegado en el teléfono: ${Notification.permission}`);
-                    return;
-                }
-
-                // 🚀 MOMENTO DEL DESPACHO: El Service Worker dispara la notificación nativa
-                await registro.showNotification("🎋 Salón BAMBOO", {
-                    body: "Alerta Operativa: ¡El sistema de notificaciones push móviles está respondiendo a la perfección!",
-                    icon: "favico.svg",
-                    badge: "favico.svg",
-                    vibrate: [200, 100, 200]
-                });
-
-            } catch (error) {
-                alert(`⚠️ Error en aduana móvil: ${error.message}`);
-            }
-        });
-    }
-
-    // Activamos la inyección del botón de pruebas
-    inyectarBotonPruebaNotificacion();
+   
 
     // ========================================================
     // 1. PRIMER FILTRO SEGURO: CONTROL DE SESIÓN Y TOKENS
