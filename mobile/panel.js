@@ -36,25 +36,51 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================
     // 🧪 DISPARADOR DE PRUEBA TEMPORAL (BORRAR DESPUÉS DE TESTEAR)
     // ========================================================
-    function dispararNotificacionPruebaBAMBOO() {
-        if ('Notification' in window && Notification.permission === 'granted') {
-            // Simulamos un retraso de 5 segundos
-            setTimeout(() => {
-                console.log("🚀 Disparando notificación de prueba...");
-                
-                new Notification("🎋 Salón BAMBOO", {
+    // ========================================================
+    // 🧪 DETECTOR Y DISPARADOR DE DIAGNÓSTICO EN VIVO
+    // ========================================================
+    function forzarNotificacionPruebaMovi() {
+        const btnSalir = document.getElementById('btnCerrarSesion');
+        if (!btnSalir) return;
+
+        // Cambiamos temporalmente la acción del botón de salir para nuestro test
+        btnSalir.onclick = null; 
+        btnSalir.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitamos que cierre la sesión en la prueba
+            
+            console.log("Pulsación detectada, intentando forzar alerta...");
+            
+            try {
+                if (!('Notification' in window)) {
+                    alert("❌ Tu navegador móvil no soporta notificaciones.");
+                    return;
+                }
+
+                if (Notification.permission !== 'granted') {
+                    alert(`⚠️ El permiso actual es: ${Notification.permission}. Ve a los ajustes de tu navegador y actívalo en verde.`);
+                    return;
+                }
+
+                // Disparamos la notificación nativa usando el gesto del clic
+                const notif = new Notification("🎋 Salón BAMBOO", {
                     body: "Alerta Operativa: Tienes un nuevo evento confirmado para este fin de semana.",
-                    icon: "favico.svg", // Ruta de tu ícono oficial
-                    badge: "favico.svg",
-                    vibrate: [200, 100, 200] // Efecto de vibración en dispositivos Android
+                    icon: "favico.svg",
+                    badge: "favico.svg"
                 });
 
-            }, 5000); // 5000 milisegundos = 5 segundos
-        }
+                notif.onclick = () => {
+                    alert("¡Hiciste clic en la notificación!");
+                };
+
+            } catch (error) {
+                // Si el celular bloquea el constructor nativo, nos dirá el motivo exacto aquí
+                alert(`⚠️ Bloqueo del Sistema Operativo: ${error.message}`);
+            }
+        });
     }
 
-    // Ejecutamos la prueba inmediatamente después de verificar los permisos
-    dispararNotificacionPruebaBAMBOO();
+    // Activamos el gancho de diagnóstico sobre el botón
+    forzarNotificacionPruebaMovi();
 
     // ========================================================
     // 1. PRIMER FILTRO SEGURO: CONTROL DE SESIÓN Y TOKENS
