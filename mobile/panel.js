@@ -34,6 +34,29 @@ document.addEventListener('DOMContentLoaded', () => {
     inicializarPermisosNotificacionesMovi();
 
     // ========================================================
+    // 🧪 DISPARADOR DE PRUEBA TEMPORAL (BORRAR DESPUÉS DE TESTEAR)
+    // ========================================================
+    function dispararNotificacionPruebaBAMBOO() {
+        if ('Notification' in window && Notification.permission === 'granted') {
+            // Simulamos un retraso de 5 segundos
+            setTimeout(() => {
+                console.log("🚀 Disparando notificación de prueba...");
+                
+                new Notification("🎋 Salón BAMBOO", {
+                    body: "Alerta Operativa: Tienes un nuevo evento confirmado para este fin de semana.",
+                    icon: "favico.svg", // Ruta de tu ícono oficial
+                    badge: "favico.svg",
+                    vibrate: [200, 100, 200] // Efecto de vibración en dispositivos Android
+                });
+
+            }, 5000); // 5000 milisegundos = 5 segundos
+        }
+    }
+
+    // Ejecutamos la prueba inmediatamente después de verificar los permisos
+    dispararNotificacionPruebaBAMBOO();
+
+    // ========================================================
     // 1. PRIMER FILTRO SEGURO: CONTROL DE SESIÓN Y TOKENS
     // ========================================================
     const token = localStorage.getItem('bamboo_token');
