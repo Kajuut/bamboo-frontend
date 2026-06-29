@@ -5,6 +5,35 @@ const API_BASE_URL = window.location.hostname === 'localhost' || window.location
 document.addEventListener('DOMContentLoaded', () => {
 
     // ========================================================
+    // 🔔 DESPERTADOR DE NOTIFICACIONES NATIVAS (WEB PUSH ACTUATOR)
+    // ========================================================
+    function inicializarPermisosNotificacionesMovi() {
+        if ('Notification' in window) {
+            // Evaluamos si el navegador móvil ya tiene bloqueado o activo el canal
+            if (Notification.permission === 'default') {
+                console.log("⏱️ Solicitando canal de alertas operativas para el Staff...");
+                Notification.requestPermission().then(permiso => {
+                    if (permiso === 'granted') {
+                        console.log("✅ Canal web push autorizado para BAMBOO.");
+                        if (typeof window.mostrarAlerta === 'function') {
+                            window.mostrarAlerta("🔔 ¡Notificaciones activadas! Recibirás avisos de eventos y movimientos financieros.");
+                        }
+                    } else {
+                        console.warn("⚠️ El operador declinó el uso de alertas push en este dispositivo.");
+                    }
+                });
+            } else if (Notification.permission === 'granted') {
+                console.log("⚡ Notificaciones activas previamente en este navegador.");
+            }
+        } else {
+            console.error("❌ Este navegador móvil no soporta la API nativa de notificaciones web.");
+        }
+    }
+
+    // Ejecutamos la solicitud visual en el instante en que el operario inicia su jornada
+    inicializarPermisosNotificacionesMovi();
+
+    // ========================================================
     // 1. PRIMER FILTRO SEGURO: CONTROL DE SESIÓN Y TOKENS
     // ========================================================
     const token = localStorage.getItem('bamboo_token');

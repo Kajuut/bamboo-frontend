@@ -643,6 +643,9 @@
                     <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
                     <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
                     <button id="btnEliminarReserva" class="btn-volver" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar</button>
+                    <!-- 🚀 ELEMENTOS RECUPERADOS: Necesarios para la gestión de PDFs en Cloudinary -->
+                    <button id="btnDescargarRecibo" class="btn-accion" style="background-color: #2D6A4F; display: none;">👁️ Ver Recibo</button>
+                    <button id="btnPurgarRecibo" class="btn-volver" style="border-color: #721C24; color: #721C24; display: none;">🗑️ Purgar Recibo</button>
                 </div>
             </header>
 
@@ -776,6 +779,14 @@
                     <div class="input-group"><label>Sillas Extra</label><input type="number" id="nuevasSillas" value="0" min="0"></div>
                     <div class="input-group"><label>Mesas Extra</label><input type="number" id="nuevasMesas" value="0" min="0"></div>
                     <div class="input-group"><label>Abonar Anticipo ($)</label><input type="number" id="nuevoAnticipo" value="0" min="0" placeholder="Ej. 2000"></div>
+                    <div id="grupoTipoCobro" class="input-group" style="display: none;">
+                        <label>Método de Cobro del Anticipo</label>
+                        <select id="nuevoTipoCobro" class="editable-input">
+                            <option value="efectivo">Efectivo</option>
+                            <option value="transferencia">Transferencia</option>
+                            <option value="cheque">Cheque</option>
+                        </select>
+                    </div>
                     <div class="input-group"><label>Solicitudes Especiales / Detalles Extra</label><textarea id="nuevasSolicitudes" rows="3" placeholder="Notas internas..."></textarea></div>
                     <button id="btnRegresarPaso2" class="btn-volver">← Regresar</button>
                     <button id="btnGuardarNuevaReserva" class="btn-accion" style="background-color: #2D6A4F;">✅ Confirmar e Inyectar</button>
@@ -882,6 +893,14 @@
             <h3>Registrar Abono</h3>
             <p id="textoDeuda" class="texto-deuda-estilo"></p>
             <input type="number" id="inputMontoAnticipo" placeholder="Cantidad ($)" class="search-input" style="border-color:var(--bamboo-pino);">
+            <div class="input-group" style="margin-top: 12px;">
+                <label style="font-size: 0.7rem;">Método de Recepción</label>
+                <select id="inputTipoCobroAnticipo" class="editable-input" style="height: 40px; font-size: 0.85rem;">
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia Unificada</option>
+                    <option value="cheque">Cheque Comercial</option>
+                </select>
+            </div>
             <p id="errorAnticipo" class="error-msg-bamboo"></p>
             <div class="modal-buttons-split-row">
                 <button id="btnCerrarModal" class="btn-volver margin-zero">Atrás</button>
