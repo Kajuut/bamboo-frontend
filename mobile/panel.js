@@ -33,48 +33,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ejecutamos la solicitud visual en el instante en que el operario inicia su jornada
     inicializarPermisosNotificacionesMovi();
 
-    // ========================================================
-    // 🧪 DISPARADOR DE PRUEBA TEMPORAL (BORRAR DESPUÉS DE TESTEAR)
-    // ========================================================
-    // ========================================================
-    // 🧪 DETECTOR Y DISPARADOR DE DIAGNÓSTICO EN VIVO
-    // ========================================================
-    function forzarNotificacionPruebaMovi() {
+   function forzarNotificacionPruebaMovi() {
         const btnSalir = document.getElementById('btnCerrarSesion');
         if (!btnSalir) return;
 
-        // Cambiamos temporalmente la acción del botón de salir para nuestro test
         btnSalir.onclick = null; 
-        btnSalir.addEventListener('click', (e) => {
-            e.preventDefault(); // Evitamos que cierre la sesión en la prueba
-            
-            console.log("Pulsación detectada, intentando forzar alerta...");
+        btnSalir.addEventListener('click', async (e) => {
+            e.preventDefault(); // Detiene el cierre de sesión durante el test
             
             try {
-                if (!('Notification' in window)) {
-                    alert("❌ Tu navegador móvil no soporta notificaciones.");
+                if (!('serviceWorker' in navigator)) {
+                    alert("❌ Tu navegador móvil no soporta Service Workers.");
                     return;
+                }
+
+                // 1. Forzamos el registro del archivo de soporte que lee Android
+                const registro = await navigator.serviceWorker.register('sw.js');
+                
+                // 2. Esperamos a que el canal esté completamente listo y en verde
+                if (Notification.permission === 'default') {
+                    await Notification.requestPermission();
                 }
 
                 if (Notification.permission !== 'granted') {
-                    alert(`⚠️ El permiso actual es: ${Notification.permission}. Ve a los ajustes de tu navegador y actívalo en verde.`);
+                    alert(`⚠️ Permiso denegado en el sistema: ${Notification.permission}`);
                     return;
                 }
 
-                // Disparamos la notificación nativa usando el gesto del clic
-                const notif = new Notification("🎋 Salón BAMBOO", {
+                // 3. 🚀 DISPARADOR MÓVIL: Usa showNotification() rompiendo el bloqueo del constructor
+                await registro.showNotification("🎋 Salón BAMBOO", {
                     body: "Alerta Operativa: Tienes un nuevo evento confirmado para este fin de semana.",
                     icon: "favico.svg",
-                    badge: "favico.svg"
+                    badge: "favico.svg",
+                    vibrate: [200, 100, 200] // Patrón de vibración en tu celular
                 });
 
-                notif.onclick = () => {
-                    alert("¡Hiciste clic en la notificación!");
-                };
-
             } catch (error) {
-                // Si el celular bloquea el constructor nativo, nos dirá el motivo exacto aquí
-                alert(`⚠️ Bloqueo del Sistema Operativo: ${error.message}`);
+                alert(`⚠️ Error en aduana móvil: ${error.message}`);
             }
         });
     }
