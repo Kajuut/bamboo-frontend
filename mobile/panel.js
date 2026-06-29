@@ -33,39 +33,64 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ejecutamos la solicitud visual en el instante en que el operario inicia su jornada
     inicializarPermisosNotificacionesMovi();
 
-   function forzarNotificacionPruebaMovi() {
-        const btnSalir = document.getElementById('btnCerrarSesion');
-        if (!btnSalir) return;
+   // ========================================================
+    // 🧪 BOTÓN FLOTANTE OPERATIVO PARA TEST DE ALERTAS
+    // ========================================================
+    function inyectarBotonPruebaNotificacion() {
+        // 1. Creamos un botón físico real y llamativo desde el código
+        const btnTest = document.createElement('button');
+        btnTest.textContent = "🧪 PROBAR ALERTA EN VIVO";
+        
+        // Estilos elegantes para que flote arriba del contenido móvil sin estorbar
+        btnTest.style.cssText = `
+            position: fixed;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            background-color: var(--bamboo-dorado, #C5A059);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        `;
 
-        btnSalir.onclick = null; 
-        btnSalir.addEventListener('click', async (e) => {
-            e.preventDefault(); // Detiene el cierre de sesión durante el test
-            
+        // Lo inyectamos directamente en el cuerpo de la página
+        document.body.appendChild(btnTest);
+
+        // 2. Programamos el momento exacto del envío al hacerle clic
+        btnTest.addEventListener('click', async () => {
             try {
                 if (!('serviceWorker' in navigator)) {
                     alert("❌ Tu navegador móvil no soporta Service Workers.");
                     return;
                 }
 
-                // 1. Forzamos el registro del archivo de soporte que lee Android
+                // Registramos el archivo de soporte técnico obligatorio
                 const registro = await navigator.serviceWorker.register('sw.js');
                 
-                // 2. Esperamos a que el canal esté completamente listo y en verde
+                // Forzamos la solicitud de aduana si estuviera en modo espera
                 if (Notification.permission === 'default') {
                     await Notification.requestPermission();
                 }
 
                 if (Notification.permission !== 'granted') {
-                    alert(`⚠️ Permiso denegado en el sistema: ${Notification.permission}`);
+                    alert(`⚠️ Permiso denegado en el teléfono: ${Notification.permission}`);
                     return;
                 }
 
-                // 3. 🚀 DISPARADOR MÓVIL: Usa showNotification() rompiendo el bloqueo del constructor
+                // 🚀 MOMENTO DEL DESPACHO: El Service Worker dispara la notificación nativa
                 await registro.showNotification("🎋 Salón BAMBOO", {
-                    body: "Alerta Operativa: Tienes un nuevo evento confirmado para este fin de semana.",
+                    body: "Alerta Operativa: ¡El sistema de notificaciones push móviles está respondiendo a la perfección!",
                     icon: "favico.svg",
                     badge: "favico.svg",
-                    vibrate: [200, 100, 200] // Patrón de vibración en tu celular
+                    vibrate: [200, 100, 200]
                 });
 
             } catch (error) {
@@ -74,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Activamos el gancho de diagnóstico sobre el botón
-    forzarNotificacionPruebaMovi();
+    // Activamos la inyección del botón de pruebas
+    inyectarBotonPruebaNotificacion();
 
     // ========================================================
     // 1. PRIMER FILTRO SEGURO: CONTROL DE SESIÓN Y TOKENS
