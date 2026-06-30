@@ -2,7 +2,7 @@
   "name": "Salón BAMBOO Administrador",
   "short_name": "BAMBOO",
   "description": "Panel de Control y Agenda Operativa de Reservaciones",
-  "start_url": "/panel.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#1A3626",
   "theme_color": "#1A3626",
