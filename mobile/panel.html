@@ -437,7 +437,7 @@
 
         .dia-bamboo-celda span.label-estado { display: none; }
 
-        .cal-leyenda-footer {
+       .cal-leyenda-footer {
             display: flex;
             justify-content: center;
             gap: 8px;
@@ -447,7 +447,13 @@
             font-weight: 700;
         }
         .leyenda-item { display: flex; align-items: center; gap: 4px; }
-        .leyenda-box { width: 10px; height: 10px; border-radius: 2px; }
+        .leyenda-box { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+        
+        /* 🎨 ASIGNACIÓN SUPREMA: Definición de colores para la leyenda del mapa maestro */
+        .color-lib { background-color: #F4EFEA; border: 1px solid var(--bamboo-border); }
+        .color-ocu { background-color: var(--bamboo-pino); }
+        .color-vis { background-color: #E2ECE9; }
+        .color-con { background-color: #E3ECF5; }
 
         /* --- EXCLUSIVOS DE MATRIZ DE PERMISOS --- */
         .segmento-permisos-bloque {
