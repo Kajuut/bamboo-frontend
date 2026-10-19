@@ -813,6 +813,147 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+            // ========================================================
+            // 💵 GESTOR OPERATIVO PC: CAMBIAR MONTO TOTAL Y/O ANTICIPO
+            // ========================================================
+            const btnCambiarMontoReal = document.getElementById('btnCambiarMontoTotal');
+            if (btnCambiarMontoReal) {
+                // Candado de permisos: Solo personal autorizado para finanzas y edición
+                if (!usuarioTienePermiso('acceso_modulo_pagos') || !usuarioTienePermiso('editar_reservaciones')) {
+                    btnCambiarMontoReal.style.display = 'none';
+                } else {
+                    btnCambiarMontoReal.style.display = 'inline-block';
+                    
+                    const clonBtnCambiarMonto = btnCambiarMontoReal.cloneNode(true);
+                    btnCambiarMontoReal.parentNode.replaceChild(clonBtnCambiarMonto, btnCambiarMontoReal);
+
+                    clonBtnCambiarMonto.addEventListener('click', (e) => {
+                        e.preventDefault();
+
+                        const modalMonto = document.getElementById('modalCambiarMontoTotal');
+                        const inputTotal = document.getElementById('inputNuevoMontoTotal');
+                        const selectAnticipo = document.getElementById('selectCambiarAnticipo');
+                        const grupoAnticipo = document.getElementById('grupoNuevoAnticipo');
+                        const inputAnticipo = document.getElementById('inputNuevoAnticipoValor');
+                        const errorMsg = document.getElementById('errorCambiarMonto');
+                        const btnCancelar = document.getElementById('btnCancelarCambiarMonto');
+                        const btnAceptar = document.getElementById('btnAceptarCambiarMonto');
+
+                        if (!modalMonto) return;
+
+                        // 1. Carga inicial de datos de la reserva seleccionada
+                        inputTotal.value = reserva.total_calculado || 0;
+                        selectAnticipo.value = 'no';
+                        grupoAnticipo.style.display = 'none';
+                        inputAnticipo.value = reserva.anticipo_pagado || 0;
+                        if (errorMsg) errorMsg.style.display = 'none';
+
+                        // 2. Manejo dinámico del selector (Sí/No)
+                        selectAnticipo.onchange = () => {
+                            if (selectAnticipo.value === 'si') {
+                                grupoAnticipo.style.display = 'block';
+                                inputAnticipo.value = reserva.anticipo_pagado || 0;
+                            } else {
+                                grupoAnticipo.style.display = 'none';
+                            }
+                        };
+
+                        // 3. Acción Cancelar
+                        btnCancelar.onclick = () => {
+                            modalMonto.style.display = 'none';
+                        };
+
+                        // 4. Acción Aceptar y Validaciones
+                        btnAceptar.onclick = async () => {
+                            const valTotal = parseFloat(inputTotal.value);
+                            const quiereCambiarAnticipo = (selectAnticipo.value === 'si');
+                            const valAnticipo = quiereCambiarAnticipo 
+                                ? parseFloat(inputAnticipo.value) 
+                                : Number(reserva.anticipo_pagado || 0);
+
+                            if (isNaN(valTotal) || valTotal < 0) {
+                                if (errorMsg) {
+                                    errorMsg.textContent = "⚠️ Ingresa un monto total válido mayor o igual a $0.";
+                                    errorMsg.style.display = 'block';
+                                }
+                                return;
+                            }
+
+                            if (quiereCambiarAnticipo && (isNaN(valAnticipo) || valAnticipo < 0)) {
+                                if (errorMsg) {
+                                    errorMsg.textContent = "⚠️ Ingresa un monto de anticipo válido mayor o igual a $0.";
+                                    errorMsg.style.display = 'block';
+                                }
+                                return;
+                            }
+
+                            if (valAnticipo > valTotal) {
+                                if (errorMsg) {
+                                    errorMsg.textContent = `⚠️ El anticipo ($${valAnticipo.toLocaleString('es-MX')}) no puede exceder el monto total ($${valTotal.toLocaleString('es-MX')}).`;
+                                    errorMsg.style.display = 'block';
+                                }
+                                return;
+                            }
+
+                            const totalSinCambio = valTotal === Number(reserva.total_calculado || 0);
+                            const anticipoSinCambio = !quiereCambiarAnticipo || (valAnticipo === Number(reserva.anticipo_pagado || 0));
+
+                            if (totalSinCambio && anticipoSinCambio) {
+                                if (errorMsg) {
+                                    errorMsg.textContent = "⚠️ No se detectaron modificaciones en las cifras.";
+                                    errorMsg.style.display = 'block';
+                                }
+                                return;
+                            }
+
+                            modalMonto.style.display = 'none';
+
+                            // 5. Modal de Advertencia Institucional
+                            const textoAdvertencia = "Seguro/a qué quiere realizar estos cambios? Hacer esto puede afectar a los precios establecidos y la coherencia con respecto a los montos de otras reservaciónes. Solo hágase si está completamente seguro/a de ser necesario";
+                            const confirmacionOperador = await mostrarConfirmacion(textoAdvertencia);
+                            if (!confirmacionOperador) return;
+
+                            // 6. Modal de Justificación de Motivo
+                            const motivoExplicado = await solicitarMotivoChangeSistema();
+                            if (motivoExplicado === null) return;
+
+                            // 7. Envío de Petición al Backend
+                            try {
+                                const respuestaAjuste = await fetch(`${API_BASE_URL}/api/reservas/${idReservaSeleccionada}/ajustar-monto`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify({
+                                        nuevo_total: valTotal,
+                                        cambiar_anticipo: quiereCambiarAnticipo,
+                                        nuevo_anticipo: valAnticipo,
+                                        motivo_modificacion: motivoExplicado,
+                                        usuario_accion: usuarioLogueado.nombre
+                                    })
+                                });
+
+                                const resultadoData = await respuestaAjuste.json();
+
+                                if (respuestaAjuste.ok) {
+                                    mostrarAlerta("¡Finanzas actualizadas con éxito! El recibo PDF ha sido regenerado y enviado.");
+                                    await cargarReservaciones();
+                                    window.verDetalle(idReservaSeleccionada);
+                                } else {
+                                    mostrarAlerta(`⚠️ ${resultadoData.mensaje || "Error al procesar el ajuste financiero."}`);
+                                }
+                            } catch (errRed) {
+                                console.error("Error de comunicación en ajuste financiero:", errRed);
+                                mostrarAlerta("Error de comunicación con el servidor. Revisa tu conexión.");
+                            }
+                        };
+
+                        modalMonto.style.display = 'flex';
+                    });
+                }
+            }
+
             // --- REFACTORIZACIÓN SUPREMA DEL CLIC DE MODIFICACIONES ---
             const btnModificarReal = document.getElementById('btnModificar');
             if (btnModificarReal) {

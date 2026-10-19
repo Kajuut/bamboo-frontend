@@ -261,13 +261,13 @@
             color: #2D6A4F;
         }
 
-        /* --- REDISEÑO DE BOTONES DE ACCIÓN DEL EXPEDIENTE --- */
-        #vista-detalle-reserva .top-header .config-grid {
-            display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 8px !important;
-            flex-direction: row !important;
-        }
+       /* --- REDISEÑO DE BOTONES DE ACCIÓN DEL EXPEDIENTE --- */
+     #vista-detalle-reserva .top-header .config-grid {
+         display: grid !important;
+         grid-template-columns: repeat(2, 1fr) !important; /* 2 columnas para que los botones tengan espacio óptimo */
+         gap: 8px !important;
+         flex-direction: row !important;
+     }
 
         #vista-detalle-reserva .top-header .btn-accion, 
         #vista-detalle-reserva .top-header .btn-volver {
@@ -647,13 +647,15 @@
                 <h1>Detalle del Evento</h1>
                 <span id="detalleFolio" class="folio-text">Folio: --</span>
                 <div class="config-grid" style="margin-top: 14px;">
-                    <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
-                    <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
-                    <button id="btnEliminarReserva" class="btn-volver" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar</button>
-                    <!-- 🚀 ELEMENTOS RECUPERADOS: Necesarios para la gestión de PDFs en Cloudinary -->
-                    <button id="btnDescargarRecibo" class="btn-accion" style="background-color: #2D6A4F; display: none;">👁️ Ver Recibo</button>
-                    <button id="btnPurgarRecibo" class="btn-volver" style="border-color: #721C24; color: #721C24; display: none;">🗑️ Purgar Recibo</button>
-                </div>
+                 <button id="btnModificar" class="btn-accion">✏️ Modificar</button>
+                 <button id="btnAbonar" class="btn-accion btn-dinero">💰 + Anticipo</button>
+                 <!-- 💵 NUEVO BOTÓN: Ajuste manual de cifras comerciales -->
+                 <button id="btnCambiarMontoTotal" class="btn-accion" style="background-color: var(--bamboo-dorado, #C5A059); color: white;">💵 Cambiar Monto</button>
+                 <button id="btnEliminarReserva" class="btn-volver" style="border-color: #721C24; color: #721C24;">🗑️ Eliminar</button>
+                 <!-- 🚀 ELEMENTOS RECUPERADOS: Necesarios para la gestión de PDFs en Cloudinary -->
+                 <button id="btnDescargarRecibo" class="btn-accion" style="background-color: #2D6A4F; display: none;">👁️ Ver Recibo</button>
+                 <button id="btnPurgarRecibo" class="btn-volver" style="border-color: #721C24; color: #721C24; display: none;">🗑️ Purgar Recibo</button>
+             </div>
             </header>
 
             <div class="config-grid">
@@ -912,6 +914,42 @@
             <div class="modal-buttons-split-row">
                 <button id="btnCerrarModal" class="btn-volver margin-zero">Atrás</button>
                 <button id="btnConfirmarAnticipo" class="btn-accion btn-dinero margin-zero">Abonar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL: CAMBIAR MONTO TOTAL Y/O ANTICIPO (MÓVIL)
+         ======================================================== -->
+    <div id="modalCambiarMontoTotal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color: var(--bamboo-pino); margin-bottom: 4px; font-size: 1.15rem;">💵 Ajustar Finanzas</h3>
+            <p style="color: var(--bamboo-muted); font-size: 0.78rem; margin-bottom: 14px;">Modifica el total contratado y/o el anticipo de este evento.</p>
+
+            <div class="input-group">
+                <label style="font-size: 0.72rem;">Monto Total Contratado ($)</label>
+                <input type="number" id="inputNuevoMontoTotal" class="editable-input" placeholder="Ej. 12500" min="0">
+            </div>
+
+            <div class="input-group" style="margin-top: 6px;">
+                <label style="font-size: 0.72rem;">¿Deseas modificar también el anticipo?</label>
+                <select id="selectCambiarAnticipo" class="editable-input">
+                    <option value="no" selected>No (Mantener anticipo actual)</option>
+                    <option value="si">Sí (Modificar anticipo registrado)</option>
+                </select>
+            </div>
+
+            <!-- Campo condicional de anticipo (oculto por defecto) -->
+            <div id="grupoNuevoAnticipo" class="input-group" style="display: none; margin-top: 6px;">
+                <label style="font-size: 0.72rem;">Nuevo Anticipo en Caja ($)</label>
+                <input type="number" id="inputNuevoAnticipoValor" class="editable-input" placeholder="Ej. 3000" min="0">
+            </div>
+
+            <p id="errorCambiarMonto" style="color: #721C24; font-size: 0.75rem; font-weight: 700; margin-top: 6px; display: none;"></p>
+
+            <div style="display: flex; gap: 8px; margin-top: 16px;">
+                <button type="button" id="btnCancelarCambiarMonto" class="btn-volver" style="width: 50%; margin: 0 !important; height: 42px; font-size: 0.8rem;">Cancelar</button>
+                <button type="button" id="btnAceptarCambiarMonto" class="btn-accion" style="width: 50%; margin: 0 !important; height: 42px; font-size: 0.8rem; background-color: #2D6A4F;">Continuar →</button>
             </div>
         </div>
     </div>
