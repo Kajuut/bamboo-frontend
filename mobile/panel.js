@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const resultadoData = await respuestaAjuste.json();
 
                                 if (respuestaAjuste.ok) {
-                                    mostrarAlerta("¡Finanzas actualizadas con éxito! El recibo PDF ha sido regenerado y enviado.");
+                                    mostrarAlerta("¡Finanzas actualizadas con éxito! El recibo PDF ha sido regenerado");
                                     await cargarReservaciones();
                                     window.verDetalle(idReservaSeleccionada);
                                 } else {
